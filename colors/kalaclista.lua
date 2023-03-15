@@ -99,6 +99,8 @@ assign("PmenuThumb", {bold = true})
 assign("StatusLine", {fg = d.forground, bg = d.background, bold = true})
 assign("StatusLineNC", {fg = d.forground, bg = d.background})
 
+assign("NeoTreeDirectoryIcon", {fg=d.yellow})
+
 -- syntax
 assign("Title", {fg = d.foreground})
 assign("Comment", {fg = l.gray})
