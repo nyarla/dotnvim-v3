@@ -4,7 +4,7 @@ end
 
 local g = vim.g
 
-g.kalaclista = {
+local kalaclista = {
   colors = {
     light = {
       foreground = "#000000",
@@ -37,8 +37,8 @@ end
 
 g.color_name = "kalaclista"
 
-local l = g.kalaclista.colors.light
-local d = g.kalaclista.colors.dark
+local l = kalaclista.colors.light
+local d = kalaclista.colors.dark
 
 -- terminal
 g.terminal_color_0 = d.background
