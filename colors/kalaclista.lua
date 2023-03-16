@@ -142,6 +142,6 @@ assign("yamlBool", {fg = d.blue})
 assign("markdownHeadingDelimiter", {fg = d.green, bold = true})
 assign("markdownUrl", {fg = d.blue})
 
-assign("perlIdentifier", {fg = l.blue})
+assign("perlIdentifier", {fg = d.blue})
 
 assign("luaMetaMethod", {fg = d.blue})
