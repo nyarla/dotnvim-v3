@@ -152,7 +152,8 @@ return {
         readonly = " ",
         unnamed = " "
       },
-      padding = {left = 1}
+      padding = {left = 1},
+      color = {fg = colors.bright}
     }
 
     ins_left {
@@ -186,7 +187,7 @@ return {
     ins_right {
       "fileformat",
       cond = function()
-        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1 and vim.bo.filetype ~= "NvimTree"
+        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1 and vim.bo.filetype ~= "neo-tree"
       end,
       symbols = {
         unix = "LF",
