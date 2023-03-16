@@ -9,11 +9,11 @@ require("lazy").setup(
 
 local set = vim.opt
 
-set.number = false
+set.autoindent = true
 set.expandtab = true
-set.tabstop = 4
+set.number = false
 set.shiftwidth = 2
 set.softtabstop = 2
-set.autoindent = true
+set.tabstop = 4
 
 vim.cmd.colorscheme("kalaclista")

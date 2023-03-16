@@ -6,24 +6,24 @@ local options = {
     encoding = "utf-8",
     fileencoding = "utf-8",
     -- ui
-    number = true,
-    cursorline = true,
-    termguicolors = true,
     ambiwidth = "double", -- fix it later
+    cursorline = true,
+    number = true,
     scl = "yes",
+    termguicolors = true,
     -- cache and backup
-    directory = HOME .. "/.cache/nvim/swap",
     backupdir = HOME .. "/.cache/nvim/backup",
+    directory = HOME .. "/.cache/nvim/swap",
     -- interactive
     clipboard = "unnamed,unnamedplus",
     mouse = "a",
     -- editor
+    autoindent = true,
+    backspace = "indent,eol,start",
     expandtab = true,
-    tabstop = 4,
     shiftwidth = 2,
     softtabstop = 2,
-    autoindent = true,
-    backspace = "indent,eol,start"
+    tabstop = 4
   },
   g = {},
   t = {}

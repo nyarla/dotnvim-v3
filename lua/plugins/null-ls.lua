@@ -2,7 +2,7 @@ return {
   "jose-elias-alvarez/null-ls.nvim",
   rev = "09e99259f4cdd929e7fb5487bf9d92426ccf7cc1",
   dependences = {
-    "nvim-lua/plenary.nvim",
+    "nvim-lua/plenary.nvim"
   },
   lazy = false,
   opts = function()
@@ -19,9 +19,9 @@ return {
         null_ls.builtins.diagnostics.luacheck,
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.diagnostics.statix,
-        null_ls.builtins.diagnostics.textlint.with({ filetypes = { "markdown" } }),
+        null_ls.builtins.diagnostics.textlint.with({filetypes = {"markdown"}}),
         null_ls.builtins.diagnostics.yamllint,
-        null_ls.builtins.diagnostics.zsh,
+        null_ls.builtins.diagnostics.zsh
       }
     }
   end

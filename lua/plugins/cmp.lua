@@ -2,18 +2,18 @@ return {
   "hrsh7th/nvim-cmp",
   rev = "feed47fd1da7a1bad2c7dca456ea19c8a5a9823a",
   dependencies = {
-    "prabirshrestha/vim-lsp",
-    "mattn/vim-lsp-settings",
     "dmitmel/cmp-vim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-cmdline",
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-path",
+    "hrsh7th/cmp-vsnip",
+    "hrsh7th/vim-vsnip",
+    "mattn/vim-lsp-settings",
     "neovim/nvim-lspconfig",
     "onsails/lspkind.nvim",
-    "ray-x/cmp-treesitter",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-cmdline",
-    "hrsh7th/cmp-vsnip",
-    "hrsh7th/vim-vsnip"
+    "prabirshrestha/vim-lsp",
+    "ray-x/cmp-treesitter"
   },
   opts = function()
     local cmp = require("cmp")
