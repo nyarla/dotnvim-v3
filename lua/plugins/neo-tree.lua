@@ -1,10 +1,35 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  rev = "205184aa0e0f08e8a1249d9bb37b45bae85f01b9",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
-    "MunifTanjim/nui.nvim"
+    "MunifTanjim/nui.nvim",
+    {
+      "s1n7ax/nvim-window-picker",
+      tag = "v1.5",
+      config = function()
+        require "window-picker".setup(
+          {
+            autoselect_one = true,
+            include_current = true,
+            show_prompt = false,
+            filter_rules = {
+              -- filter using buffer options
+              bo = {
+                -- if the file type is one of following, the window will be ignored
+                filetype = {"neo-tree", "neo-tree-popup", "notify"},
+                -- if the buffer type is one of following, the window will be ignored
+                buftype = {"terminal", "quickfix"}
+              }
+            },
+            fg_color = "#ffffff",
+            current_win_hl_color = "#006699",
+            other_win_hl_color = "#006699",
+            selection_chars = "ABCDEF"
+          }
+        )
+      end
+    }
   },
   cmd = "Neotree",
   lazy = false,
@@ -34,6 +59,9 @@ return {
           follow_current_file = true,
           hijack_netrw_behavior = "open_current",
           use_libuv_file_watcher = true
+        },
+        mappings = {
+          ["<2-LeftMouse>"] = "open_with_window_picker"
         }
       }
     }

@@ -1,6 +1,5 @@
 return {
   "hrsh7th/nvim-cmp",
-  rev = "feed47fd1da7a1bad2c7dca456ea19c8a5a9823a",
   dependencies = {
     "dmitmel/cmp-vim-lsp",
     "hrsh7th/cmp-buffer",

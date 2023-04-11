@@ -1,6 +1,5 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  rev = "cd436f92f65def9c7e74a7324d3eab422ef85643",
   lazy = false,
   opts = {
     ensure_installed = "all",

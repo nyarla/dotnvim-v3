@@ -16,7 +16,6 @@ endfunction
 )
 return {
   "nvim-lualine/lualine.nvim",
-  rev = "e99d733e0213ceb8f548ae6551b04ae32e590c80",
   lazy = false,
   opts = function()
     local lualine = require("lualine")

@@ -1,6 +1,5 @@
 return {
   "sbdchd/neoformat",
-  rev = "891fad5829f91cbc3d0866f7abd028d233b8763e",
   lazy = false,
   config = function(_)
     local formats = {
