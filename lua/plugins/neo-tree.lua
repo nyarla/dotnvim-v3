@@ -41,6 +41,8 @@ return {
     vim.fn.sign_define("DiagnostivSignHint", {text = "", texthl = "DiagnosticSignHint"})
   end,
   opts = function()
+    local cc = require("neo-tree.sources.filesystem.commands")
+
     return {
       close_if_last_window = false,
       source_selector = {
@@ -61,7 +63,13 @@ return {
           use_libuv_file_watcher = true
         },
         mappings = {
-          ["<2-LeftMouse>"] = "open_with_window_picker"
+          ["<2-LeftMouse>"] = function(state)
+            if vim.fn.winnr("$") == 1 then
+              cc.open(state)
+            else
+              cc.open_with_window_picker(state)
+            end
+          end
         }
       }
     }
