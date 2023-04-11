@@ -22,9 +22,9 @@ return {
     local keybinds = {
       ["<Tab>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
       ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
-      ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Replace, select = true}),
-      ["<Left>"] = cmp.mapping.abort(),
-      ["<Right>"] = cmp.mapping.abort(),
+      ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+      ["<Left>"] = cmp.mapping.close(),
+      ["<Right>"] = cmp.mapping.close(),
       ["<Up>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
       ["<Down>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert})
     }
