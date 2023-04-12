@@ -23,8 +23,8 @@ return {
               }
             },
             fg_color = "#ffffff",
-            current_win_hl_color = "#006699",
-            other_win_hl_color = "#006699",
+            current_win_hl_color = "#669900",
+            other_win_hl_color = "#669900",
             selection_chars = "ABCDEF"
           }
         )
