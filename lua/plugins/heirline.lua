@@ -265,7 +265,9 @@ return {
     }
 
     local scroll = {
-      condition = is_file,
+      condition = function()
+        return is_file() and (vim.fn.isdirectory("/Users") ~= 1)
+      end,
       static = {
         bar = {"🭶", "🭷", "🭸", "🭹", "🭺", "🭻"}
       },
