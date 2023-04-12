@@ -82,7 +82,7 @@ assign("LineNr", {fg = l.gray, bg = d.backgtound})
 assign("LineNrAbove", {fg = l.gray, bg = d.backgtound})
 assign("LineNrBelow", {fg = l.gray, bg = d.backgtound})
 
-assign("CursorLine", {bg = d.gray})
+assign("CursorLine", {bg = "#112233"})
 assign("CursorLineNr", {fg = d.foreground, bg = l.blue})
 
 assign("Search", {bold = true, underline = true})
@@ -96,7 +96,7 @@ assign("PmenuSel", {fg = l.background, bg = l.blue})
 assign("PmenuSbar", {fg = l.gray, bg = d.background})
 assign("PmenuThumb", {bold = true})
 
-assign("StatusLine", {fg = d.forground, bg = d.background, bold = true})
+assign("StatusLine", {fg = d.forground, bg = d.gray, bold = true})
 assign("StatusLineNC", {fg = d.forground, bg = d.background})
 
 assign("NeoTreeDirectoryIcon", {fg = d.yellow})
@@ -104,11 +104,19 @@ assign("NeoTreeDirectoryIcon", {fg = d.yellow})
 assign("NeoTreeTabActive", {fg = d.green})
 assign("NeoTreeTabInactive", {fg = l.gray})
 
+assign("TabLine", {bg = d.background})
+assign("TabLineSel", {bg = d.blue})
+assign("TabLineClose", {fg = d.red, bg = d.background})
+
+assign("HeirLineButtonFileManager", {fg = d.yellow, bold = true})
+assign("HeirLineButtonTerminal", {fg = d.cyan, bold = true})
+assign("HeirLineButtonNewTab", {bold = true})
+
 -- syntax
 assign("Title", {fg = d.foreground})
 assign("Comment", {fg = l.gray})
 
-assign("Constant", {fg = foregound})
+assign("Constant", {fg = d.foregound})
 assign("String", {fg = d.yellow})
 assign("Character", {fg = d.blue})
 assign("Number", {fg = d.green})

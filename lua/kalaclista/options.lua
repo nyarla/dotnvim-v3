@@ -11,6 +11,7 @@ local options = {
     number = true,
     scl = "yes",
     termguicolors = true,
+    showtabline = 2,
     -- cache and backup
     backupdir = HOME .. "/.cache/nvim/backup",
     directory = HOME .. "/.cache/nvim/swap",

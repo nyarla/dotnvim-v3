@@ -14,6 +14,5 @@ set.expandtab = true
 set.number = false
 set.shiftwidth = 2
 set.softtabstop = 2
-set.tabstop = 4
 
 vim.cmd.colorscheme("kalaclista")

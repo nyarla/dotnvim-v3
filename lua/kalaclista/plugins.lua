@@ -5,6 +5,6 @@ require("lazy").setup(
     require("plugins.cmp"),
     require("plugins.neoformat"),
     require("plugins.null-ls"),
-    require("plugins.lualine")
+    require("plugins.heirline")
   }
 )
