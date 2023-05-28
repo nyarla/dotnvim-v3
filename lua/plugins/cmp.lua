@@ -12,42 +12,98 @@ return {
     "neovim/nvim-lspconfig",
     "onsails/lspkind.nvim",
     "prabirshrestha/vim-lsp",
-    "ray-x/cmp-treesitter"
+    "ray-x/cmp-treesitter",
+    "zbirenbaum/copilot.lua",
+    "zbirenbaum/copilot-cmp",
+    {"tzachar/cmp-tabnine", build = "./install.sh"}
   },
   opts = function()
     local cmp = require("cmp")
     local lspkind = require("lspkind")
 
-    local keybinds = {
-      ["<Tab>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
-      ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
-      ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+    local lspkindInitOpts = {
+      symbol_map = {
+        Copilot = "",
+        TabNine = "",
+        String = "",
+        Error = ""
+      }
+    }
+
+    local completionSources = {
+      {name = "vim_lsp", priority = 99},
+      {name = "treesitter", priority = 89},
+      {name = "path", priority = 88},
+      {name = "vsnip", priority = 79},
+      {name = "buffer", priority = 78}
+    }
+
+    local useGitHubCopilot = vim.env["NVIM_USE_GITHUB_COPILOT"] == "1"
+    local useTabNine = vim.env["NVIM_USE_TABNINE"] == "1"
+
+    if useGitHubCopilot then
+      table.insert(completionSources, 1, {name = "copilot", priority = 100})
+      require("copilot").setup(
+        {
+          suggestion = {enabled = false},
+          panel = {enabled = false}
+        }
+      )
+    elseif useTabNine then
+      table.insert(completionSources, 1, {name = "cmp_tabnine", priority = 100})
+      local tabnine = require("cmp_tabnine.config")
+      tabnine:setup(
+        {
+          max_lines = 1000,
+          max_num_results = 20,
+          sort = true,
+          run_on_every_keystroke = true,
+          snippet_placeholder = "...",
+          ignored_file_types = {
+            "markdown"
+          },
+          show_prediction_strength = false
+        }
+      )
+    end
+
+    local bufferKeyBindings = {
+      ["<Up>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
+      ["<Down>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
       ["<Left>"] = cmp.mapping.close(),
       ["<Right>"] = cmp.mapping.close(),
-      ["<Up>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
-      ["<Down>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert})
+      ["<Tab>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
+      ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
+      ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true})
     }
+
+    local cmdlineKeyBindings = {
+      ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true})
+    }
+
+    lspkind.init(lspkindInitOpts)
 
     cmp.setup.cmdline(
       {"/", "?"},
       {
-        mapping = cmp.mapping.preset.cmdline(keybinds),
+        mapping = cmp.mapping.preset.cmdline(cmdlineKeyBindings),
         sources = {
-          {name = "buffer"}
+          {name = "treesitter", priority = 100},
+          {name = "buffer", priority = 99}
         }
       }
     )
 
     cmp.setup.cmdline(
-      ":",
+      {":"},
       {
-        mapping = cmp.mapping.preset.cmdline(keybinds),
+        mapping = cmp.mapping.preset.cmdline(cmdlineKeyBindings),
         sources = cmp.config.sources(
           {
-            {name = "path"}
+            {name = "cmdline"}
           },
           {
-            {name = "cmdline"}
+            {name = "path"}
           }
         )
       }
@@ -55,14 +111,21 @@ return {
 
     return {
       formatting = {
-        fields = {"kind", "abbr", "menu"},
+        fields = {"abbr", "menu", "kind"},
         format = lspkind.cmp_format(
           {
-            mode = "symbol",
+            mode = "symbol_text",
             maxwidth = 50,
             ellipsis_char = "..."
           }
-        )
+        ),
+        before = function(entry, vim_item)
+          if entry.source.name == "cmp_tabnine" then
+            vim_item.kind = "TabNine"
+          end
+
+          return vim_item
+        end
       },
       snippet = {
         expand = function(args)
@@ -70,21 +133,11 @@ return {
         end
       },
       window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered()
+        completion = cmp.config.window.bordered({scrollbar = false}),
+        documentation = cmp.config.window.bordered({scrollbar = false})
       },
-      mapping = cmp.mapping.preset.insert(keybinds),
-      sources = cmp.config.sources(
-        {
-          {name = "vim_lsp"},
-          {name = "vsnip"},
-          {name = "path"},
-          {name = "treesitter"}
-        },
-        {
-          {name = "buffer"}
-        }
-      )
+      mapping = cmp.mapping.preset.insert(bufferKeyBindings),
+      sources = cmp.config.sources(completionSources)
     }
   end
 }
