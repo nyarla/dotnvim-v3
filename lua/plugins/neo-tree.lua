@@ -47,11 +47,10 @@ return {
       close_if_last_window = false,
       source_selector = {
         winbar = true,
-        tab_labels = {
-          filesystem = "",
-          buffers = "",
-          git_status = "",
-          diagnostics = "裂"
+        sources = {
+          {source = "filesystem", display_name = ""},
+          {source = "buffers", display_name = ""},
+          {source = "git_status", display_name = ""}
         },
         content_layout = "center"
       },
