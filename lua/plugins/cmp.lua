@@ -46,9 +46,16 @@ return {
       require("copilot").setup(
         {
           suggestion = {enabled = false},
-          panel = {enabled = false}
+          panel = {enabled = false},
+          filetypes = {
+            html = false,
+            markdown = false,
+            gitcommit = false,
+            gitrebase = false
+          }
         }
       )
+      require("copilot_cmp").setup()
     elseif useTabNine then
       table.insert(completionSources, 1, {name = "cmp_tabnine", priority = 100})
       local tabnine = require("cmp_tabnine.config")
@@ -60,6 +67,7 @@ return {
           run_on_every_keystroke = true,
           snippet_placeholder = "...",
           ignored_file_types = {
+            "html",
             "markdown"
           },
           show_prediction_strength = false
