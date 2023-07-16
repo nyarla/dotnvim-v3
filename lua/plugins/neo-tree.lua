@@ -38,7 +38,7 @@ return {
     vim.fn.sign_define("DiagnostivSignError", {text = "", texthl = "DiagnosticSignError"})
     vim.fn.sign_define("DiagnostivSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
     vim.fn.sign_define("DiagnostivSignInfo", {text = "", texthl = "DiagnosticSignInfo"})
-    vim.fn.sign_define("DiagnostivSignHint", {text = "", texthl = "DiagnosticSignHint"})
+    vim.fn.sign_define("DiagnostivSignHint", {text = "", texthl = "DiagnosticSignHint"})
   end,
   opts = function()
     local cc = require("neo-tree.sources.filesystem.commands")
@@ -48,9 +48,9 @@ return {
       source_selector = {
         winbar = true,
         sources = {
-          {source = "filesystem", display_name = ""},
-          {source = "buffers", display_name = ""},
-          {source = "git_status", display_name = ""}
+          {source = "filesystem", display_name = ""},
+          {source = "buffers", display_name = "󰂮"},
+          {source = "git_status", display_name = ""}
         },
         content_layout = "center"
       },
