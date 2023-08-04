@@ -54,22 +54,18 @@ return {
         },
         content_layout = "center"
       },
+      filesystem = {
+        follow_current_file = {enabled = true},
+        hijack_netrw_behavior = "open_current",
+        use_libuv_file_watcher = true,
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+      },
       window = {
         width = 30,
-        filesystem = {
-          follow_current_file = true,
-          hijack_netrw_behavior = "open_current",
-          use_libuv_file_watcher = true
-        },
-        mappings = {
-          ["<2-LeftMouse>"] = function(state)
-            if vim.fn.winnr("$") == 1 then
-              cc.open(state)
-            else
-              cc.open_with_window_picker(state)
-            end
-          end
-        }
       }
     }
   end
