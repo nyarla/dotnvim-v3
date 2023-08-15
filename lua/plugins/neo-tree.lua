@@ -41,7 +41,9 @@ return {
     vim.fn.sign_define("DiagnostivSignHint", {text = "", texthl = "DiagnosticSignHint"})
   end,
   opts = function()
-    local cc = require("neo-tree.sources.filesystem.commands")
+    local cc = require("neo-tree.sources.common.commands")
+    local fs = require("neo-tree.sources.filesystem.commands")
+    local utils = require("neo-tree.utils")
 
     return {
       close_if_last_window = false,
@@ -52,7 +54,7 @@ return {
           {source = "buffers", display_name = "󰂮"},
           {source = "git_status", display_name = ""}
         },
-        content_layout = "center"
+        content_layout = "center",
       },
       filesystem = {
         follow_current_file = {enabled = true},
@@ -63,9 +65,30 @@ return {
           hide_dotfiles = false,
           hide_gitignored = false,
         },
+        window = {
+          mappings = {
+            ["<2-LeftMouse>"] = function(state,callback)
+              if vim.fn.winnr("$") == 1 then
+                fs.open(state)
+              else
+                fs.open_with_window_picker(state,callback)
+              end
+            end
+          }
+        }
       },
+
       window = {
         width = 30,
+        mappings = {
+          ["<2-LeftMouse>"] = function(state,callback)
+            if vim.fn.winnr("$") == 1 then
+              cc.open(state)
+            else
+              cc.open_with_window_picker(state,callback)
+            end
+          end
+        }
       }
     }
   end
