@@ -27,6 +27,7 @@ return {
     )
 
     return {
+      debug = true,
       sources = {
         -- diagnostics
         null_ls.builtins.code_actions.statix,
@@ -37,7 +38,7 @@ return {
         null_ls.builtins.diagnostics.luacheck,
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.diagnostics.statix,
-        null_ls.builtins.diagnostics.textlint.with({filetypes = {"markdown"}}),
+        null_ls.builtins.diagnostics.textlint.with({filetypes = {"markdown"}, timeout = 10000}),
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.diagnostics.zsh
       }
