@@ -1,7 +1,7 @@
 require("lazy").setup(
   {
     require("plugins.neo-tree"),
-    require("plugins.treesitter"),
+    require("plugins.nvim-treesitter"),
     require("plugins.vim-perl"),
     require("plugins.cmp"),
     require("plugins.neoformat"),
