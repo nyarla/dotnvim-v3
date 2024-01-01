@@ -1,81 +1,82 @@
-return {
-  "hrsh7th/nvim-cmp",
-  dependencies = {
-    "dmitmel/cmp-vim-lsp",
+local HOME = vim.env["HOME"]
+
+local sources = {
+  ["common"] = {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-cmdline",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-vsnip",
-    "hrsh7th/vim-vsnip",
-    "mattn/vim-lsp-settings",
-    "neovim/nvim-lspconfig",
-    "onsails/lspkind.nvim",
-    "prabirshrestha/vim-lsp",
-    "ray-x/cmp-treesitter",
-    "zbirenbaum/copilot.lua",
-    "zbirenbaum/copilot-cmp",
-    {"tzachar/cmp-tabnine", build = "./install.sh"}
+    "hrsh7th/cmp-path"
   },
+  ["treesitter"] = {
+    "nvim-treesitter/nvim-treesitter",
+    "ray-x/cmp-treesitter"
+  },
+  ["snippet"] = {
+    "hrsh7th/vim-vsnip",
+    "hrsh7th/cmp-vsnip"
+  },
+  ["llm"] = {
+    ["TabNine"] = {
+      {"tzachar/cmp-tabnine", build = "./install.sh"}
+    },
+    ["CodeiumAI"] = {
+      {
+        "Exafunction/codeium.nvim",
+        dependencies = {
+          "vim-lua/plenary.nvim"
+        },
+        config = function()
+          require("codeium").setup(
+            {
+              ["config_path"] = HOME .. "/Applications/Development/codeium/config",
+              ["bin_path"] = HOME .. "/Applications/Development/codeium/bin"
+            }
+          )
+        end
+      }
+    },
+    ["GitHubCopilot"] = {}
+  }
+}
+
+local dependencies = {
+  "nvim-lua/plenary.nvim",
+  "onsails/lspkind.nvim"
+}
+
+for _, src in ipairs({"common", "treesitter", "snippet"}) do
+  for _, dep in ipairs(sources[src]) do
+    table.insert(dependencies, dep)
+  end
+end
+
+local ENABLE_TABNINE = vim.env["NVIM_ENABLE_TABNINE"] == "1"
+local ENABLE_GITHUB_COPILOT = vim.env["NVIM_ENABLE_GITHUB_COPILOT"] == "1"
+local ENABLE_CODEIUM_AI = vim.env["NVIM_ENABLE_CODEIUM_AI"] == "1"
+
+if ENABLE_TABNINE then
+  table.insert(dependencies, sources["llm"]["TabNine"])
+end
+
+if ENABLE_GITHUB_COPILOT then
+  table.insert(dependencies, sources["llm"]["GitHubCopilot"])
+end
+
+if ENABLE_CODEIUM_AI then
+  table.insert(dependencies, sources["llm"]["CodeiumAI"])
+end
+
+return {
+  "hrsh7th/nvim-cmp",
+  dependencies = dependencies,
   opts = function()
+    -- lib
+    --
     local cmp = require("cmp")
     local lspkind = require("lspkind")
 
-    local lspkindInitOpts = {
-      symbol_map = {
-        Copilot = "",
-        TabNine = "",
-        String = "",
-        Error = ""
-      }
-    }
-
-    local completionSources = {
-      {name = "vim_lsp", priority = 99},
-      {name = "treesitter", priority = 89},
-      {name = "path", priority = 88},
-      {name = "vsnip", priority = 79},
-      {name = "buffer", priority = 78}
-    }
-
-    local useGitHubCopilot = vim.env["NVIM_USE_GITHUB_COPILOT"] == "1"
-    local useTabNine = vim.env["NVIM_USE_TABNINE"] == "1"
-
-    if useGitHubCopilot then
-      table.insert(completionSources, 1, {name = "copilot", priority = 100})
-      require("copilot").setup(
-        {
-          suggestion = {enabled = false},
-          panel = {enabled = false},
-          filetypes = {
-            html = false,
-            markdown = false,
-            gitcommit = false,
-            gitrebase = false
-          }
-        }
-      )
-      require("copilot_cmp").setup()
-    elseif useTabNine then
-      table.insert(completionSources, 1, {name = "cmp_tabnine", priority = 100})
-      local tabnine = require("cmp_tabnine.config")
-      tabnine:setup(
-        {
-          max_lines = 1000,
-          max_num_results = 20,
-          sort = true,
-          run_on_every_keystroke = true,
-          snippet_placeholder = "...",
-          ignored_file_types = {
-            "html",
-            "markdown"
-          },
-          show_prediction_strength = false
-        }
-      )
-    end
-
-    local bufferKeyBindings = {
+    -- keybindings
+    --
+    local cmpBufferKeyBindings = {
       ["<Up>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
       ["<Down>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
       ["<Left>"] = cmp.mapping.close(),
@@ -85,16 +86,64 @@ return {
       ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true})
     }
 
-    local cmdlineKeyBindings = {
+    local cmpCmdlineKeyBindings = {
       ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true})
     }
 
-    lspkind.init(lspkindInitOpts)
+    -- options
+    --
+    local lspkindInitArgs = {
+      symbol_map = {
+        Codeium = "",
+        Copilot = "",
+        Error = "",
+        String = "",
+        TabNine = ""
+      }
+    }
+
+    -- sources
+    --
+    local cmpCompletionSources = {
+      -- 9x: lsp, treesitter
+      -- {name = "vim_lsp", priority = 81},
+      {name = "treesitter", priority = 80},
+      -- 8x: path
+      {name = "path", priority = 79},
+      -- 7x; vsnip, buffer
+      {name = "vsnip", priority = 69},
+      {name = "buffer", priority = 68}
+    }
+
+    if ENABLE_TABNINE then
+      table.insert(cmpCompletionSources, 1, {name = "cmp_tabnine", priority = 90})
+      require("cmp_tabnine.config"):setup(
+        {
+          max_lines = 1000,
+          max_num_results = 2,
+          sort = true,
+          run_on_every_keystroke = true,
+          snippet_placeholder = "...",
+          ignored_file_types = {
+            "html",
+            "markdown"
+          }
+        }
+      )
+    end
+
+    if ENABLE_GITHUB_COPILOT then
+    -- FIXME: configuration to GitHub Copilot
+    end
+
+    if ENABLE_CODEIUM_AI then
+      table.insert(cmpCompletionSources, 1, {name = "codeium", priority = 90})
+    end
 
     cmp.setup.cmdline(
       {"/", "?"},
       {
-        mapping = cmp.mapping.preset.cmdline(cmdlineKeyBindings),
+        mapping = cmp.mapping.preset.cmdline(cmpCmdlineKeyBindings),
         sources = {
           {name = "treesitter", priority = 100},
           {name = "buffer", priority = 99}
@@ -105,7 +154,7 @@ return {
     cmp.setup.cmdline(
       {":"},
       {
-        mapping = cmp.mapping.preset.cmdline(cmdlineKeyBindings),
+        mapping = cmp.mapping.preset.cmdline(cmpCmdlineKeyBindings),
         sources = cmp.config.sources(
           {
             {name = "cmdline"}
@@ -116,6 +165,10 @@ return {
         )
       }
     )
+
+    -- configuration
+    --
+    lspkind.init(lspkindInitArgs)
 
     return {
       formatting = {
@@ -144,8 +197,8 @@ return {
         completion = cmp.config.window.bordered({scrollbar = false}),
         documentation = cmp.config.window.bordered({scrollbar = false})
       },
-      mapping = cmp.mapping.preset.insert(bufferKeyBindings),
-      sources = cmp.config.sources(completionSources)
+      mapping = cmp.mapping.preset.insert(cmpBufferKeyBindings),
+      sources = cmp.config.sources(cmpCompletionSources)
     }
   end
 }
