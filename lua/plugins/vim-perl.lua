@@ -14,6 +14,6 @@ local features = {
 
 return {
   "vim-perl/vim-perl",
-  lazy = false,
+  ft = "perl",
   build = "make clean " .. table.concat(features, " ")
 }
