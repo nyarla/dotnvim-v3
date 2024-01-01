@@ -9,7 +9,7 @@ require("lazy").setup(
     require("plugins.editorconfig"),
     require("plugins.conform"),
     require("plugins.cmp"),
-    require("plugins.null-ls"),
+    require("plugins.nvim-lint"),
     -- interface
     --
     require("plugins.neo-tree"),
