@@ -34,8 +34,8 @@ local LLM = {
       config = function()
         require("codeium").setup(
           {
-            ["config_path"] = lib.Path("/Applications/Development/codeium/config"),
-            ["bin_path"] = lib.Path("/Applications/Development/codeium/bin")
+            ["config_path"] = lib.Path("/.local/share/nvim/codeium/config"),
+            ["bin_path"] = lib.Path("/.local/share/nvim/codeium/bin")
           }
         )
       end
