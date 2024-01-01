@@ -1,12 +1,18 @@
 require("lazy").setup(
   {
-    require("plugins.neo-tree"),
+    -- filetype
+    --
     require("plugins.nvim-treesitter"),
     require("plugins.vim-perl"),
+    -- edtior
+    --
+    require("plugins.editorconfig"),
     require("plugins.cmp"),
     require("plugins.neoformat"),
     require("plugins.null-ls"),
-    require("plugins.heirline"),
-    require("plugins.editorconfig")
+    -- interface
+    --
+    require("plugins.neo-tree"),
+    require("plugins.heirline")
   }
 )
