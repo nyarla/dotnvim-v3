@@ -1,70 +1,75 @@
-local HOME = vim.env["HOME"]
-
-local sources = {
-  ["common"] = {
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-cmdline",
-    "hrsh7th/cmp-path"
-  },
-  ["treesitter"] = {
-    "nvim-treesitter/nvim-treesitter",
-    "ray-x/cmp-treesitter"
-  },
-  ["snippet"] = {
-    "hrsh7th/vim-vsnip",
-    "hrsh7th/cmp-vsnip"
-  },
-  ["llm"] = {
-    ["TabNine"] = {
-      {"tzachar/cmp-tabnine", build = "./install.sh"}
-    },
-    ["CodeiumAI"] = {
-      {
-        "Exafunction/codeium.nvim",
-        dependencies = {
-          "vim-lua/plenary.nvim"
-        },
-        config = function()
-          require("codeium").setup(
-            {
-              ["config_path"] = HOME .. "/Applications/Development/codeium/config",
-              ["bin_path"] = HOME .. "/Applications/Development/codeium/bin"
-            }
-          )
-        end
-      }
-    },
-    ["GitHubCopilot"] = {}
-  }
+local lib = require("lib/utils")
+local SRCS = {
+  -- common completer
+  --
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-cmdline",
+  "hrsh7th/cmp-path",
+  -- treesitter completer
+  --
+  "nvim-treesitter/nvim-treesitter",
+  "ray-x/cmp-treesitter",
+  -- sinippet completer
+  --
+  "hrsh7th/vim-vsnip",
+  "hrsh7th/cmp-vsnip"
 }
 
+local LLM = {
+  ["tabnine"] = {
+    {"tzachar/cmp-tabnine", build = "./install.sh"}
+  },
+  ["codeium"] = {
+    {
+      "Exafunction/codeium.nvim",
+      dependencies = {
+        "vim-lua/plenary.nvim"
+      },
+      config = function()
+        require("codeium").setup(
+          {
+            ["config_path"] = lib.Path("/Applications/Development/codeium/config"),
+            ["bin_path"] = lib.Path("/Applications/Development/codeium/bin")
+          }
+        )
+      end
+    }
+  },
+  ["copilot"] = {}
+}
+
+-- dependencies
+--
 local dependencies = {
   "nvim-lua/plenary.nvim",
   "onsails/lspkind.nvim"
 }
 
-for _, src in ipairs({"common", "treesitter", "snippet"}) do
-  for _, dep in ipairs(sources[src]) do
-    table.insert(dependencies, dep)
+lib.Merge(dependencies, SRCS)
+
+lib.EnabledIf(
+  "tabnine",
+  function()
+    return lib.Merge(dependencies, LLM["tabnine"])
   end
-end
+)
 
-local ENABLE_TABNINE = vim.env["NVIM_ENABLE_TABNINE"] == "1"
-local ENABLE_GITHUB_COPILOT = vim.env["NVIM_ENABLE_GITHUB_COPILOT"] == "1"
-local ENABLE_CODEIUM_AI = vim.env["NVIM_ENABLE_CODEIUM_AI"] == "1"
+lib.EnabledIf(
+  "codeium",
+  function()
+    return lib.Merge(dependencies, LLM["codeium"])
+  end
+)
 
-if ENABLE_TABNINE then
-  table.insert(dependencies, sources["llm"]["TabNine"])
-end
+lib.EnabledIf(
+  "copilot",
+  function()
+    return lib.Merge(dependencies, LLM["copilot"])
+  end
+)
 
-if ENABLE_GITHUB_COPILOT then
-  table.insert(dependencies, sources["llm"]["GitHubCopilot"])
-end
-
-if ENABLE_CODEIUM_AI then
-  table.insert(dependencies, sources["llm"]["CodeiumAI"])
-end
-
+-- configuration
+--
 return {
   "hrsh7th/nvim-cmp",
   dependencies = dependencies,
@@ -115,30 +120,35 @@ return {
       {name = "buffer", priority = 68}
     }
 
-    if ENABLE_TABNINE then
-      table.insert(cmpCompletionSources, 1, {name = "cmp_tabnine", priority = 90})
-      require("cmp_tabnine.config"):setup(
-        {
-          max_lines = 1000,
-          max_num_results = 2,
-          sort = true,
-          run_on_every_keystroke = true,
-          snippet_placeholder = "...",
-          ignored_file_types = {
-            "html",
-            "markdown"
+    lib.EnabledIf(
+      "tabnine",
+      function()
+        table.insert(cmpCompletionSources, 1, {name = "cmp_tabnine", priority = 90})
+        require("cmp_tabnine.config"):setup(
+          {
+            max_lines = 1000,
+            max_num_results = 2,
+            sort = true,
+            run_on_every_keystroke = true,
+            snippet_placeholder = "...",
+            ignored_file_types = {
+              "html",
+              "markdown"
+            }
           }
-        }
-      )
-    end
+        )
+      end
+    )
 
-    if ENABLE_GITHUB_COPILOT then
-    -- FIXME: configuration to GitHub Copilot
-    end
+    lib.EnabledIf(
+      "codeium",
+      function()
+        table.insert(cmpCompletionSources, 1, {name = "codeium", priority = 90})
+      end
+    )
 
-    if ENABLE_CODEIUM_AI then
-      table.insert(cmpCompletionSources, 1, {name = "codeium", priority = 90})
-    end
+    -- TODO: add configuration for GitHub Copilot
+    -- lib.EnabledIf("copilot", function() end)
 
     cmp.setup.cmdline(
       {"/", "?"},
