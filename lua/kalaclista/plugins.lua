@@ -7,8 +7,8 @@ require("lazy").setup(
     -- edtior
     --
     require("plugins.editorconfig"),
+    require("plugins.conform"),
     require("plugins.cmp"),
-    require("plugins.neoformat"),
     require("plugins.null-ls"),
     -- interface
     --
