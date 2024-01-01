@@ -9,6 +9,12 @@ local SRCS = {
   --
   "nvim-treesitter/nvim-treesitter",
   "ray-x/cmp-treesitter",
+  -- lsp completer
+  --
+  "neovim/nvim-lspconfig",
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  "hrsh7th/cmp-nvim-lsp",
   -- sinippet completer
   --
   "hrsh7th/vim-vsnip",
@@ -79,6 +85,21 @@ return {
     local cmp = require("cmp")
     local lspkind = require("lspkind")
 
+    -- setup
+    --
+    require("mason").setup()
+    require("mason-lspconfig").setup_handlers(
+      {
+        function(server)
+          require("lspconfig")[server].setup(
+            {
+              capabilities = require("cmp_nvim_lsp").default_capabilities()
+            }
+          )
+        end
+      }
+    )
+
     -- keybindings
     --
     local cmpBufferKeyBindings = {
@@ -111,7 +132,7 @@ return {
     --
     local cmpCompletionSources = {
       -- 9x: lsp, treesitter
-      -- {name = "vim_lsp", priority = 81},
+      {name = "nvim_lsp", priority = 81},
       {name = "treesitter", priority = 80},
       -- 8x: path
       {name = "path", priority = 79},
