@@ -5,9 +5,8 @@ return {
   },
   lazy = false,
   opts = function()
-    local utils = require("heirline.utils")
-    local conditions = require("heirline.conditions")
-
+    -- theme
+    --
     local colors = {
       bright = "#f8f8f8",
       dark = "#000000",
@@ -21,34 +20,74 @@ return {
       yellow = "#ffcc33"
     }
 
+    local theme = colors
+
+    -- lib
+    --
+    local lib = require("heirline.utils")
+    local cond = require("heirline.conditions")
+
+    local iconinfo = require("nvim-web-devicons").get_icon_color
+
+    local function is_active()
+      return tonumber(vim.g.actual_curwin) == vim.api.nvim_get_current_win()
+    end
+
+    local function is_file()
+      local file = true
+
+      if file and vim.bo.filetype == "neo-tree" then
+        file = false
+      end
+
+      if file and vim.bo.buftype == "terminal" then
+        file = false
+      end
+
+      return file
+    end
+
+    local function get_os_symbol()
+      local symbol = " "
+
+      if vim.fn.isdirectory("/Users") == 1 then
+        symbol = "  "
+      elseif vim.fn.isdirectory("/etc/nixos") == 1 then
+        symbol = "  "
+      elseif vim.fn.isdirectory("/mnt/c") == 1 then
+        symbol = "  "
+      end
+
+      return symbol
+    end
+
     -- tabline
     --
-
-    local buttonFileManager = {
+    local toggleFileManager = {
       provider = " ",
-      hl = "HeirlineButtonFileManager",
+      hl = "HeirlineToggleFileManager",
       on_click = {
-        name = "openFileManager",
+        name = "toggleFileManager",
         callback = function()
           vim.cmd("Neotree toggle")
         end
       }
     }
 
-    local buttonTerminal = {
+    local openTerminal = {
       provider = " ",
-      hl = "HeirlineButtonTerminal",
+      hl = "HeirlineOpenTerminal",
       on_click = {
-        name = "openTerminalonNewTab",
+        name = "openNewTabAsTerminal",
         callback = function()
           vim.cmd("tabnew | terminal")
         end
       }
     }
 
-    local buttonNewTab = {
+    local openNewTab = {
       provider = " ",
-      hl = "HeirlineButtonNewTab",
+      hl = "HeirlineOpenNewTab",
       on_click = {
         name = "openNewTab",
         callback = function()
@@ -57,7 +96,7 @@ return {
       }
     }
 
-    local tabPage = {
+    local tablineTab = {
       provider = function(self)
         return "%" .. self.tabnr .. "T " .. self.tabpage .. " %T"
       end,
@@ -70,104 +109,88 @@ return {
       end
     }
 
-    local tabPages = {
+    local tablineTabs = {
       condition = function()
         return true
       end,
-      utils.make_tablist(tabPage),
+      lib.make_tablist(tablineTab),
       {provider = "%=%999X%X", hl = "TabLineClose"}
     }
 
-    local globalTabline = {
-      buttonFileManager,
-      buttonTerminal,
-      buttonNewTab,
-      tabPages
+    local heirlineTabline = {
+      toggleFileManager,
+      openTerminal,
+      openNewTab,
+      tablineTabs
     }
 
     -- statusline
     --
-
-    local function is_active()
-      return tonumber(vim.g.actual_curwin) == vim.api.nvim_get_current_win()
-    end
-
-    local function is_file()
-      return not (vim.bo.filetype == "neo-tree" or vim.bo.buftype == "terminal")
-    end
-
-    local editorMode = {
+    local statusEditorMode = {
       provider = function(self)
         return self.symbol
       end,
       init = function(self)
         self.mode = vim.fn.mode(1)
-
-        if vim.fn.isdirectory("/Users") == 1 then
-          self.symbol = "  "
-        elseif vim.fn.isdirectory("/etc/nixos") == 1 then
-          self.symbol = "  "
-        elseif vim.fn.isdirectory("/mnt/c") == 1 then
-          self.symbol = "  "
-        else
-          self.symbol = "  "
-        end
+        self.symbol = get_os_symbol()
       end,
       condition = is_file,
       static = {
         mode_colors = {
-          n = colors.blue,
-          no = colors.gray,
-          nov = colors.gray,
-          ["no"] = colors.gray,
+          n = theme.blue,
+          no = theme.gray,
+          nov = theme.gray,
+          ["no"] = theme.gray,
           --
-          v = colors.green,
-          V = colors.green,
-          Vs = colors.green,
-          [""] = colors.green,
-          ["s"] = colors.green,
-          s = colors.green,
-          S = colors.green,
-          [""] = colors.green,
+          v = theme.green,
+          V = theme.green,
+          Vs = theme.green,
+          [""] = theme.green,
+          ["s"] = theme.green,
+          s = theme.green,
+          S = theme.green,
+          [""] = theme.green,
           --
-          i = colors.yellow,
-          ic = colors.yellow,
-          ix = colors.yellow,
+          i = theme.yellow,
+          ic = theme.yellow,
+          ix = theme.yellow,
           --
-          R = colors.red,
-          Rc = colors.red,
-          Rvc = colors.red,
-          Rvx = colors.red,
-          Rx = colors.red,
+          R = theme.red,
+          Rc = theme.red,
+          Rvc = theme.red,
+          Rvx = theme.red,
+          Rx = theme.red,
           --
-          c = colors.magenta,
-          cv = colors.magenta,
+          c = theme.magenta,
+          cv = theme.magenta,
           --
-          r = colors.green,
-          rm = colors.green,
-          ["r?"] = colors.green,
-          ["!"] = colors.green,
+          r = theme.green,
+          rm = theme.green,
+          ["r?"] = theme.green,
+          ["!"] = theme.green,
           --
-          t = colors.cyan
+          t = theme.cyan
         },
         hl = function(self)
-          return {bg = self.mode_colors[self.mode], fg = colors.dark}
+          return {bg = self.mode_colors[self.mode], fg = theme.dark}
         end
       }
     }
 
-    local specialMode = {
+    local statusSpecialMode = {
       static = {
-        filetype = {
+        supported = {
+          ["neo-tree"] = true,
+          ["terminal"] = true
+        },
+        data = {
           ["neo-tree"] = {
             symbol = "  ",
-            color = colors.yellow
-          }
-        },
-        buftype = {
+            color = theme.yellow
+          },
           ["terminal"] = {
             symbol = "  ",
-            color = colors.cyan
+            color = theme.cyan
           }
         }
       },
@@ -178,23 +201,18 @@ return {
         return {bg = self.color, fg = colors.dark}
       end,
       condition = function(self)
-        local ft = vim.bo.filetype
-        local bt = vim.bo.buftype
+        local bo = vim.bo
         local enabled = false
 
-        local data = self.filetype[ft]
-        if data ~= nil then
-          self.symbol = data.symbol
-          self.color = data.color
-
+        if not enabled and self.supported[bo.filetype] ~= nil then
+          self.symbol = self.data[bo.filetype].symbol
+          self.color = self.data[bo.filetype].color
           enabled = true
         end
 
-        data = self.buftype[bt]
-        if data ~= nil then
-          self.symbol = data.symbol
-          self.color = data.color
-
+        if not enabled and self.supported[bo.buftype] ~= nil then
+          self.symbol = self.data[bo.buftype].symbol
+          self.color = self.data[bo.buftype].color
           enabled = true
         end
 
@@ -202,9 +220,9 @@ return {
       end
     }
 
-    local filetype = {
+    local displayFiletype = {
       init = function(self)
-        local icon, color = require "nvim-web-devicons".get_icon_color(vim.fn.bufname(), vim.bo.filetype)
+        local icon, color = iconinfo(vim.fn.bufname(), vim.bo.filetype)
 
         if icon ~= nil and color ~= nil then
           self.symbol = " " .. icon .. " "
@@ -223,17 +241,18 @@ return {
       end
     }
 
-    local filename = {
+    local displayFilename = {
       condition = is_file,
-      provider = function(self)
+      provider = function()
         local fullpath = vim.fn.expand("%:~:.")
         local cwd = vim.fn.getcwd()
+
         return ((fullpath:sub(0, #cwd) == cwd) and fullpath:sub(#cwd + 1) or fullpath) .. " "
       end,
       hl = {fg = colors.bright, bg = colors.darkgray}
     }
 
-    local readonly = {
+    local statusReadonly = {
       condition = function()
         return is_file() and vim.bo.readonly
       end,
@@ -241,7 +260,7 @@ return {
       hl = {fg = colors.yellow, bg = colors.darkgray}
     }
 
-    local crlf = {
+    local displayCRLF = {
       condition = is_file,
       provider = function()
         local symbol = ""
@@ -264,25 +283,8 @@ return {
       hl = {bg = colors.darkgray}
     }
 
-    local scroll = {
-      condition = function()
-        return is_file() and (vim.fn.isdirectory("/Users") ~= 1)
-      end,
-      static = {
-        bar = {"🭶", "🭷", "🭸", "🭹", "🭺", "🭻"}
-      },
-      provider = function(self)
-        local cursor = vim.api.nvim_win_get_cursor(0)[1]
-        local lines = vim.api.nvim_buf_line_count(0)
-        local idx = math.floor((cursor - 1) / lines * #self.bar) + 1
-
-        return self.bar[idx]
-      end,
-      hl = {fg = colors.blue, bg = colors.darkgray}
-    }
-
-    local diagnostics = {
-      condition = conditions.has_diagnostics,
+    local hasDiagnostics = {
+      condition = cond.has_diagnostics,
       static = {
         icons = {
           error = " ",
@@ -331,7 +333,7 @@ return {
       }
     }
 
-    local modified = {
+    local statusModified = {
       condition = function()
         return vim.bo.modified
       end,
@@ -342,17 +344,16 @@ return {
       condition = function()
         return is_active()
       end,
-      editorMode,
-      specialMode,
-      scroll,
-      filetype,
-      modified,
-      readonly,
-      filename,
-      crlf,
+      statusEditorMode,
+      statusSpecialMode,
+      displayFiletype,
+      statusModified,
+      statusReadonly,
+      displayFilename,
+      displayCRLF,
       {provider = "%="},
       ruler,
-      diagnostics
+      hasDiagnostics
     }
 
     local inactiveStatusLine = {
@@ -367,14 +368,14 @@ return {
       hl = {fg = colors.bright}
     }
 
-    local globalStatusline = {
+    local heirlineStatusline = {
       activeStatusLine,
       inactiveStatusLine
     }
 
     return {
-      tabline = globalTabline,
-      statusline = globalStatusline
+      tabline = heirlineTabline,
+      statusline = heirlineStatusline
     }
   end
 }

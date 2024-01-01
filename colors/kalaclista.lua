@@ -108,9 +108,9 @@ assign("TabLine", {bg = d.background})
 assign("TabLineSel", {bg = d.blue})
 assign("TabLineClose", {fg = d.red, bg = d.background})
 
-assign("HeirLineButtonFileManager", {fg = d.yellow, bold = true})
-assign("HeirLineButtonTerminal", {fg = d.cyan, bold = true})
-assign("HeirLineButtonNewTab", {bold = true})
+assign("HeirLineToggleFileManager", {fg = d.yellow, bold = true})
+assign("HeirLineOpenTerminal", {fg = d.cyan, bold = true})
+assign("HeirLineOpenNewTab", {bold = true})
 
 assign("CmpWinPmenuSbar", {bg = l.blue})
 assign("CmpItemAbbrMatchFuzzy", {fg = d.foreground, bg = l.blue})
