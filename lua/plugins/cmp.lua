@@ -83,6 +83,18 @@ return {
           capabilities = require("cmp_nvim_lsp").default_capabilities(),
         })
       end,
+      ["lua_ls"] = function()
+        local lspconfig = require("lspconfig")
+        lspconfig.lua_ls.setup({
+          settings = {
+            Lua = {
+              diagnostics = {
+                globals = { "vim" },
+              },
+            },
+          },
+        })
+      end,
     })
 
     -- keybindings
