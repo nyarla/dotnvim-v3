@@ -25,10 +25,10 @@ local options = {
     shiftwidth = 2,
     softtabstop = 2,
     tabstop = 4,
-    updatetime = 500
+    updatetime = 500,
   },
   g = {},
-  t = {}
+  t = {},
 }
 
 for scope, table in pairs(options) do
@@ -41,21 +41,16 @@ if vim.fn.isdirectory(HOME .. "/.local/share/nvim/mason/bin") then
   vim.env["PATH"] = vim.env["PATH"] .. ":" .. HOME .. "/.local/share/nvim/mason/bin"
 end
 
-vim.api.nvim_create_autocmd(
-  {"CursorHold"},
-  {
-    pattern = "*",
-    callback = function()
-      vim.diagnostic.open_float()
-    end
-  }
-)
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+  pattern = "*",
+  callback = function()
+    vim.diagnostic.open_float()
+  end,
+})
 
-vim.diagnostic.config(
-  {
-    float = {
-      scope = "line",
-      border = "rounded"
-    }
-  }
-)
+vim.diagnostic.config({
+  float = {
+    scope = "line",
+    border = "rounded",
+  },
+})

@@ -1,5 +1,5 @@
 return {
   "gpanders/editorconfig.nvim",
   lazy = true,
-  event = "InsertEnter"
+  event = "InsertEnter",
 }

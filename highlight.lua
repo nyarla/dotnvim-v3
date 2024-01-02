@@ -2,11 +2,9 @@ require("kalaclista.options")
 require("kalaclista.colorscheme")
 require("kalaclista.lazy")
 
-require("lazy").setup(
-  {
-    require("plugins.treesitter")
-  }
-)
+require("lazy").setup({
+  require("plugins.treesitter"),
+})
 
 local set = vim.opt
 

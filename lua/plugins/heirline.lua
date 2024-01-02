@@ -1,7 +1,7 @@
 return {
   "rebelot/heirline.nvim",
   dependences = {
-    "nvim-tree/nvim-web-devicons"
+    "nvim-tree/nvim-web-devicons",
   },
   lazy = false,
   opts = function()
@@ -17,7 +17,7 @@ return {
       green = "#ccff00",
       magenta = "#cc99cc",
       red = "#ff6633",
-      yellow = "#ffcc33"
+      yellow = "#ffcc33",
     }
 
     local theme = colors
@@ -70,8 +70,8 @@ return {
         name = "toggleFileManager",
         callback = function()
           vim.cmd("Neotree toggle")
-        end
-      }
+        end,
+      },
     }
 
     local openTerminal = {
@@ -81,8 +81,8 @@ return {
         name = "openNewTabAsTerminal",
         callback = function()
           vim.cmd("tabnew | terminal")
-        end
-      }
+        end,
+      },
     }
 
     local openNewTab = {
@@ -92,8 +92,8 @@ return {
         name = "openNewTab",
         callback = function()
           vim.cmd("tabnew")
-        end
-      }
+        end,
+      },
     }
 
     local tablineTab = {
@@ -106,7 +106,7 @@ return {
         else
           return "TabLineSel"
         end
-      end
+      end,
     }
 
     local tablineTabs = {
@@ -114,14 +114,14 @@ return {
         return true
       end,
       lib.make_tablist(tablineTab),
-      {provider = "%=%999X%X", hl = "TabLineClose"}
+      { provider = "%=%999X%X", hl = "TabLineClose" },
     }
 
     local heirlineTabline = {
       toggleFileManager,
       openTerminal,
       openNewTab,
-      tablineTabs
+      tablineTabs,
     }
 
     -- statusline
@@ -169,36 +169,36 @@ return {
           ["r?"] = theme.green,
           ["!"] = theme.green,
           --
-          t = theme.cyan
+          t = theme.cyan,
         },
         hl = function(self)
-          return {bg = self.mode_colors[self.mode], fg = theme.dark}
-        end
-      }
+          return { bg = self.mode_colors[self.mode], fg = theme.dark }
+        end,
+      },
     }
 
     local statusSpecialMode = {
       static = {
         supported = {
           ["neo-tree"] = true,
-          ["terminal"] = true
+          ["terminal"] = true,
         },
         data = {
           ["neo-tree"] = {
             symbol = "  ",
-            color = theme.yellow
+            color = theme.yellow,
           },
           ["terminal"] = {
             symbol = "  ",
-            color = theme.cyan
-          }
-        }
+            color = theme.cyan,
+          },
+        },
       },
       provider = function(self)
         return self.symbol
       end,
       hl = function(self)
-        return {bg = self.color, fg = colors.dark}
+        return { bg = self.color, fg = colors.dark }
       end,
       condition = function(self)
         local bo = vim.bo
@@ -217,7 +217,7 @@ return {
         end
 
         return enabled
-      end
+      end,
     }
 
     local displayFiletype = {
@@ -237,8 +237,8 @@ return {
         return self.symbol
       end,
       hl = function(self)
-        return {fg = self.color, bg = colors.darkgray}
-      end
+        return { fg = self.color, bg = colors.darkgray }
+      end,
     }
 
     local displayFilename = {
@@ -249,7 +249,7 @@ return {
 
         return ((fullpath:sub(0, #cwd) == cwd) and fullpath:sub(#cwd + 1) or fullpath) .. " "
       end,
-      hl = {fg = colors.bright, bg = colors.darkgray}
+      hl = { fg = colors.bright, bg = colors.darkgray },
     }
 
     local statusReadonly = {
@@ -257,7 +257,7 @@ return {
         return is_file() and vim.bo.readonly
       end,
       provider = " ",
-      hl = {fg = colors.yellow, bg = colors.darkgray}
+      hl = { fg = colors.yellow, bg = colors.darkgray },
     }
 
     local displayCRLF = {
@@ -274,13 +274,13 @@ return {
 
         return symbol
       end,
-      hl = {bg = colors.darkgray}
+      hl = { bg = colors.darkgray },
     }
 
     local ruler = {
       provider = " %l/%L",
       condition = is_file,
-      hl = {bg = colors.darkgray}
+      hl = { bg = colors.darkgray },
     }
 
     local hasDiagnostics = {
@@ -290,54 +290,54 @@ return {
           error = " ",
           warn = " ",
           info = " ",
-          hints = " "
+          hints = " ",
         },
         diagnostic = function(self, level)
           return self.diag[level] > 0 and (self.icons[level] .. self.diag[level] .. " ")
-        end
+        end,
       },
       init = function(self)
         local diag = {
-          error = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR}),
-          warn = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN}),
-          hints = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT}),
-          info = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO})
+          error = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR }),
+          warn = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN }),
+          hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT }),
+          info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO }),
         }
 
         self.diag = diag
       end,
-      update = {"DiagnosticChanged", "BufEnter"},
+      update = { "DiagnosticChanged", "BufEnter" },
       {
         provider = function(self)
           return self.diagnostic(self, "error")
         end,
-        hl = {fg = colors.red, bg = colors.darkgray}
+        hl = { fg = colors.red, bg = colors.darkgray },
       },
       {
         provider = function(self)
           return self.diagnostic(self, "warn")
         end,
-        hl = {fg = colors.yellow, bg = colors.darkgray}
+        hl = { fg = colors.yellow, bg = colors.darkgray },
       },
       {
         provider = function(self)
           return self.diagnostic(self, "hints")
         end,
-        hl = {fg = colors.cyan, bg = colors.darkgray}
+        hl = { fg = colors.cyan, bg = colors.darkgray },
       },
       {
         provider = function(self)
           return self.diagnostic(self, "info")
         end,
-        hl = {fg = colors.bright, bg = colors.darkgray}
-      }
+        hl = { fg = colors.bright, bg = colors.darkgray },
+      },
     }
 
     local statusModified = {
       condition = function()
         return vim.bo.modified
       end,
-      provider = " "
+      provider = " ",
     }
 
     local activeStatusLine = {
@@ -351,9 +351,9 @@ return {
       statusReadonly,
       displayFilename,
       displayCRLF,
-      {provider = "%="},
+      { provider = "%=" },
       ruler,
-      hasDiagnostics
+      hasDiagnostics,
     }
 
     local inactiveStatusLine = {
@@ -363,19 +363,19 @@ return {
       {
         provider = function(self)
           return string.rep("-", tonumber(vim.api.nvim_win_get_width(0)))
-        end
+        end,
       },
-      hl = {fg = colors.bright}
+      hl = { fg = colors.bright },
     }
 
     local heirlineStatusline = {
       activeStatusLine,
-      inactiveStatusLine
+      inactiveStatusLine,
     }
 
     return {
       tabline = heirlineTabline,
-      statusline = heirlineStatusline
+      statusline = heirlineStatusline,
     }
-  end
+  end,
 }

@@ -31,5 +31,5 @@ return {
   ["HOME"] = HOME,
   ["EnabledIf"] = EnabledIf,
   ["Merge"] = Merge,
-  ["Path"] = Path
+  ["Path"] = Path,
 }

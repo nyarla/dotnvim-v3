@@ -9,12 +9,12 @@ local features = {
   "moose",
   "object-pad",
   "test-more",
-  "try-tiny"
+  "try-tiny",
 }
 
 return {
   "vim-perl/vim-perl",
   lazy = true,
   ft = "perl",
-  build = "make clean " .. table.concat(features, " ")
+  build = "make clean " .. table.concat(features, " "),
 }

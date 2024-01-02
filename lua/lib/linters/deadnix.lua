@@ -1,7 +1,7 @@
 return {
   cmd = "deadnix",
   append_fname = true,
-  args = {"--output-format=json"},
+  args = { "--output-format=json" },
   stream = "stdout",
   parser = function(output, _)
     if vim.trim(output) == "" or output == nil then
@@ -19,19 +19,16 @@ return {
 
     local diagnostics = {}
     for _, msg in ipairs(results) do
-      table.insert(
-        diagnostics,
-        {
-          file = file,
-          lnum = msg.line - 1,
-          col = msg.column - 1,
-          end_col = msg.endColumn - 1,
-          message = msg.message,
-          severity = vim.diagnostic.severity.WARN
-        }
-      )
+      table.insert(diagnostics, {
+        file = file,
+        lnum = msg.line - 1,
+        col = msg.column - 1,
+        end_col = msg.endColumn - 1,
+        message = msg.message,
+        severity = vim.diagnostic.severity.WARN,
+      })
     end
 
     return diagnostics
-  end
+  end,
 }
