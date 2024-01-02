@@ -290,7 +290,7 @@ return {
           error = " ",
           warn = " ",
           info = " ",
-          hint = " "
+          hints = " "
         },
         diagnostic = function(self, level)
           return self.diag[level] > 0 and (self.icons[level] .. self.diag[level] .. " ")
