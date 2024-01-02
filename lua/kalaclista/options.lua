@@ -37,6 +37,10 @@ for scope, table in pairs(options) do
   end
 end
 
+if vim.fn.isdirectory(HOME .. "/.local/share/nvim/mason/bin") then
+  vim.env["PATH"] = vim.env["PATH"] .. ":" .. HOME .. "/.local/share/nvim/mason/bin"
+end
+
 vim.api.nvim_create_autocmd(
   {"CursorHold"},
   {
