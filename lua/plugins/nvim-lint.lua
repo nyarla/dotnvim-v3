@@ -1,5 +1,6 @@
 local custom = {
   deadnix = require("lib.linters.deadnix"),
+  textlint = require("lib.linters.textlint"),
 }
 
 vim.api.nvim_create_autocmd({ "InsertEnter", "BufWritePost", "TextChanged" }, {
@@ -17,6 +18,7 @@ return {
 
     linters.linters_by_ft = {
       nix = { "statix", "deadnix" },
+      markdown = { "textlint" },
     }
 
     for key, val in pairs(custom) do
