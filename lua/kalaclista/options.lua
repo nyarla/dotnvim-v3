@@ -24,7 +24,8 @@ local options = {
     expandtab = true,
     shiftwidth = 2,
     softtabstop = 2,
-    tabstop = 4
+    tabstop = 4,
+    updatetime = 500
   },
   g = {},
   t = {}
@@ -35,3 +36,22 @@ for scope, table in pairs(options) do
     vim[scope][setting] = value
   end
 end
+
+vim.api.nvim_create_autocmd(
+  {"CursorHold"},
+  {
+    pattern = "*",
+    callback = function()
+      vim.diagnostic.open_float()
+    end
+  }
+)
+
+vim.diagnostic.config(
+  {
+    float = {
+      scope = "line",
+      border = "rounded"
+    }
+  }
+)
