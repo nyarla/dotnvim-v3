@@ -53,21 +53,13 @@ return {
       javascript = {"prettier"},
       javascriptreact = {"prettier"},
       json = {"perttier"},
-      lua = {"luafmt"},
+      lua = {"stylua"},
       nix = {"nixfmt"},
       perl = {"perltidy"},
       scss = {"prettier"},
       typescript = {"prettier"},
       typescriptreact = {"prettier"},
       yaml = {"preitter"}
-    },
-    formatters = {
-      -- FIXME: switch to stylua
-      luafmt = {
-        command = "luafmt",
-        args = {"--stdin", "-i", "2"},
-        stdin = true
-      }
     }
   }
 }
