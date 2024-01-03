@@ -1,35 +1,29 @@
-local HOME = vim.env["HOME"]
+local M = {}
 
-local Path = function(path)
-  return HOME .. path
+M.HOME = vim.env.HOME
+
+function M.Path(path)
+  return M.HOME .. path
 end
 
-local Merge = function(dst, src)
+function M.Merge(dst, src)
   for _, val in ipairs(src) do
     table.insert(dst, val)
   end
 end
 
-local EnabledIf = function(feature, callback)
+function M.EnabledIf(feature, callback)
   local key = "NVIM_ENABLE_" .. string.upper(feature)
 
   if vim.env[key] == nil then
     return
   end
 
-  env = vim.env[key]
-
-  if env == "0" or env == "false" then
+  if vim.env[key] == "0" or vim.env[key] == "false" then
     return
   end
 
-  callback(env)
-  return
+  callback(vim.env[key])
 end
 
-return {
-  ["HOME"] = HOME,
-  ["EnabledIf"] = EnabledIf,
-  ["Merge"] = Merge,
-  ["Path"] = Path,
-}
+return M
