@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+pkgs="$(cd "$(dirname "${0}")" && pwd)"
+
+pname="${1}"
+shift
+
+exe="${1}"
+shift
+
+exec -a "${exe}" nix shell "${pkgs}#${pname}" -c "${exe}" "${@}"
