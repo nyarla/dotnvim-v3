@@ -17,3 +17,6 @@ shell:
 		LUA_CPATH=$(HOME)/.luarocks/lib/lua/5.1/?.so \
 		PATH=$(HOME)/.luarocks/bin:$(PATH) \
 		nix shell nixpkgs#luajit nixpkgs#luajitPackages.luarocks --impure
+
+test: .test-in-shell
+	vusted
