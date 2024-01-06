@@ -9,8 +9,11 @@ all:
 
 shell:
 	nix shell nixpkgs#luajit nixpkgs#luajitPackages.luarocks -c zsh -euo pipefail -c "\
-		export IN_NVIM_SHELL=1 ; \
 		luarocks --local --lua-version=5.1 install vusted RT_LIBDIR=$(LIBC)/lib; \
-		export LUA_PATH=$(HOME)/.luarocks/share/lua/5.1/?.lua:$(HOME)/.luarocks/share/lua/5.1/?/init.lua ; \
-		export LUA_CPATH=$(HOME)/.luarocks/lib/lua/5.1/?.so ; \
 	"
+	env \
+		IN_NVIM_SHELL=1 \
+		LUA_PATH=$(HOME)/.luarocks/share/lua/5.1/?.lua\;$(HOME)/.luarocks/share/lua/5.1/?/init.lua \
+		LUA_CPATH=$(HOME)/.luarocks/lib/lua/5.1/?.so \
+		PATH=$(HOME)/.luarocks/bin:$(PATH) \
+		nix shell nixpkgs#luajit nixpkgs#luajitPackages.luarocks --impure
