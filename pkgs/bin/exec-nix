@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+PNAME=
+APP=
+
+while (( $# > 0 )) do
+  case "${1}" in
+    -a | --app | --app=* )
+      if [[ "${1}" =~ ^--package= ]]; then
+        PNAME="${1#*=}"
+      elif [[ -z "${2}" ]] || [[ "${2}" =~ ^-+ ]]; then
+        echo "option 'package' requires an argument" 1>&2
+        exit 1
+      else
+        APP="${2}"
+        shift
+      fi
+      ;;
+
+    -p | --package | --package=* )
+      if [[ "${1}" =~ ^--package= ]]; then
+        PNAME="${1#*=}"
+      elif [[ -z "${2}" ]] || [[ "${2}" =~ ^-+ ]]; then
+        echo "option 'package' requires an argument" 1>&2
+        exit 1
+      else
+        PNAME="${2}"
+        shift
+      fi
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+  esac
+  shift
+done
+
+if [[ -z "${APP}" ]]; then
+  echo "executable appliation name required" 1>&2
+fi
+
+if [[ -z "${PNAME}" ]]; then
+  PNAME="${APP}"
+fi
+
+FLAKE="$(cd "$(dirname "${0}")/.." && pwd)"
+
+echo exec -a "${APP}" nix shell "${FLAKE}#${PNAME}" -c "${APP}" "${@}"
