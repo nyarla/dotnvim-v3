@@ -1,5 +1,0 @@
-describe("example", function()
-  it("test", function()
-    assert.True(true)
-  end)
-end)
