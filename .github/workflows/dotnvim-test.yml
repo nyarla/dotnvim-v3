@@ -6,7 +6,8 @@ on:
     paths:
       - ".github/workflows/dotnvim-test.yml"
       - "colors/**"
-      - lua/**
+      - "lua/**"
+      - "spec/**"
   push:
     branches:
       - main
