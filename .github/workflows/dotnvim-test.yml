@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       # setup nvim
-      - uses: rhysd/action-setup-vim@7da6ebc0a6968029b289c2ebeab34c5ca34cea3f # v1.3.0
+      - uses: rhysd/action-setup-vim@0aa9cbac67d0fe3c5e3cde29caf745a721b19479 # v1.3.1
         with:
           neovim: true
           version: v0.9.5
