@@ -14,10 +14,14 @@ local M = lib.mkPlugin({
   },
 
   configurePhase = function()
-    require("codeium").setup({
-      ["config_path"] = vim.env.HOME .. "/.local/share/nvim/codeium/config",
-      ["bin_path"] = vim.env.HOME .. "/.local/share/nvim/codeium/bin",
-    })
+    return {
+      config = function()
+        require("codeium").setup({
+          ["config_path"] = vim.env.HOME .. "/.local/share/nvim/codeium/config",
+          ["bin_path"] = vim.env.HOME .. "/.local/share/nvim/codeium/bin",
+        })
+      end,
+    }
   end,
 })
 
