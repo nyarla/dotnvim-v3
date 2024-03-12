@@ -14,10 +14,33 @@
 
     in {
       packages."x86_64-linux" = {
+        # linter
         inherit (pkgs) deadnix;
         inherit (pkgs) hadolint;
+        inherit (pkgs) shellcheck;
         inherit (pkgs) statix;
         inherit (scripts) textlint;
+
+        # formatter
+        inherit (pkgs) go;
+        inherit (pkgs) gotools;
+        inherit (pkgs) nixfmt;
+        inherit (pkgs) stylua;
+        inherit (pkgs.nodePackages) prettier;
+        inherit (pkgs.perlPackages) PerlTidy;
+
+        # language server
+        inherit (pkgs) gopls;
+        inherit (pkgs) nixd;
+        inherit (pkgs) perlnavigator;
+        inherit (pkgs) sqls;
+        inherit (pkgs.luajitPackages) lua-lsp;
+        inherit (pkgs.nodePackages) bash-language-server;
+        inherit (pkgs.nodePackages) vscode-json-languageserver;
+
+        # toolchain
+        inherit (pkgs) biome;
+        inherit (pkgs) sqlfluff;
       };
     };
 }
