@@ -29,4 +29,5 @@ require("lazy").setup({
   require("plugins.cmp-path"),
   require("plugins.cmp-treesitter"),
   require("plugins.cmp-vsnip"),
+  require("plugins.codeium"),
 })
