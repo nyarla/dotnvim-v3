@@ -3,6 +3,7 @@ local M = {}
 M.INFO = vim.diagnostic.severity.INFO
 M.WARN = vim.diagnostic.severity.WARN
 M.ERROR = vim.diagnostic.severity.ERROR
+M.HINT = vim.diagnostic.severity.HINT
 
 function M.isJSON(src)
   if vim.startswith(src, "{") and not vim.startswith(src, "}") then
