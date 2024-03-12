@@ -39,7 +39,23 @@ local M = lib.mkPlugin({
   configurePhase = function()
     return {
       init = function()
+        useLSP("bashls", "bash-language-server", "bash-language-server", { "start" }, {})
+        useLSP("gopls", "gopls", "gopls", {}, {})
+        useLSP("jsonls", "vscode-json-languageserver", "vscode-json-language-server", { "--stdio" }, {})
         useLSP("lua_ls", "lua-lsp", "lua-lsp", {}, {})
+        useLSP("nixd", "nixd", "nixd", {}, {})
+        useLSP("sqls", "sqls", "sqls", {}, {})
+        useLSP("tailwindcss", "tailwindcss-language-server", "tailwind-language-server", { "--stdio" }, {})
+        useLSP("taplo", "taplo", "taplo", { "lsp", "" }, {})
+        useLSP("perlnavigator", "perlnavigator", "perlnavigator", { "--stdio" }, {
+          settings = {
+            perlnavigator = {
+              perlPath = "perl",
+              enableWarnings = true,
+              perlcriticEnabled = false,
+            },
+          },
+        })
       end,
       opts = function()
         local cmp = require("cmp")
