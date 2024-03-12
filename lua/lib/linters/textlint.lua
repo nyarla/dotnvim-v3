@@ -1,67 +1,69 @@
+local lib = require("lib.linters")
+
+local function detectTextlintrc()
+  local path = vim.fn.expand("%:p")
+  local paths = { "" }
+  local textlintrc = ""
+
+  for dir in string.gmatch(path, "[^/+]") do
+    local rc = table.concat(paths, "/") .. ".textlintrc"
+
+    if vim.fn.filereadable(rc) == 1 then
+      textlintrc = rc
+      break
+    end
+
+    for _, extension in ipairs({ "cjs", "js", "json", "yaml", "yml" }) do
+      local fn = table.concat(paths, "/") .. ".textlintrc." .. extension
+
+      if vim.fn.filereadable(fn) == 1 then
+        textlintrc = fn
+        break
+      end
+    end
+
+    table.insert(paths, dir)
+  end
+
+  if textlintrc ~= "" then
+    return "--config=" .. textlintrc
+  end
+
+  return ""
+end
+
 local serevity = {
-  vim.diagnostic.severity.INFO,
-  vim.diagnostic.severity.WARN,
-  vim.diagnostic.severity.ERROR,
+  lib.INFO,
+  lib.WARN,
+  lib.ERROR,
 }
 
-local extensions = {
-  "cjs",
-  "js",
-  "json",
-  "yaml",
-  "yml",
-}
+local M = lib.mkLinter({
+  pname = "textlint",
+  executable = "textlint",
 
-return {
-  cmd = "textlint",
-  append_fname = true,
-  args = {
-    "--format=json",
-    function()
-      local path = vim.fn.expand("%:p")
-      local paths = { "" }
-      local textlintrc = ""
+  configurePhase = function()
+    return {
+      append_fname = true,
+      stream = "stdout",
+      ignore_exitcode = true,
+    }
+  end,
 
-      for dir in string.gmatch(path, "[^/]+") do
-        local rc = table.concat(paths, "/") .. "/.textlintrc"
+  buildArgs = function()
+    return { "--format=json", detectTextlintrc }
+  end,
 
-        if vim.fn.filereadable(rc) == 1 then
-          textlintrc = rc
-          break
-        end
-
-        for _, ext in ipairs(extensions) do
-          local fn = table.concat(paths, "/") .. "/.textlintrc." .. ext
-
-          if vim.fn.filereadable(fn) == 1 then
-            textlintrc = fn
-            break
-          end
-        end
-
-        table.insert(paths, dir)
-      end
-
-      if textlintrc ~= "" then
-        return "--config=" .. textlintrc
-      end
-
-      return ""
-    end,
-  },
-  stream = "stdout",
-  ignore_exitcode = true,
-  parser = function(output, _)
-    if vim.trim(output) == "" or output == nil then
+  parsePhase = function(src)
+    if vim.trim(src) == "" or src == nil then
       return {}
     end
 
-    if not vim.startswith(output, "[") then
+    if not lib.isJSON(src) then
       return {}
     end
 
-    local decoded = vim.json.decode(output)[1]
-
+    local decoded = vim.json.decode(src)[1]
     local file = decoded.filePath
     local messages = decoded.messages
 
@@ -84,4 +86,6 @@ return {
 
     return diagnostics
   end,
-}
+})
+
+return M
