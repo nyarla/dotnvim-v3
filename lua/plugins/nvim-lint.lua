@@ -33,6 +33,7 @@ local M = lib.mkPlugin({
         }
 
         plugin.linters["deadnix"] = require("lib.linters.deadnix")
+        plugin.linters["textlint"] = require("lib.linters.textlint")
 
         return true
       end,
