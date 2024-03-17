@@ -1,24 +1,8 @@
 local lib = require("lib.plugins")
 
-local function useLSP(server, pkg, exe, args, override)
+local function useLSP(server, override)
   local lsp = require("lspconfig")
-  local cmd = {
-    "bash",
-    vim.env.HOME .. "/.config/nvim/pkgs/bin/nix-run",
-    "--app",
-    exe,
-    "--paclage",
-    pkg,
-    "--",
-  }
-
-  for _, arg in ipairs(args) do
-    table.insert(cmd, arg)
-  end
-
-  override.cmd = cmd
   override.capabilities = require("cmp_nvim_lsp").default_capabilities()
-
   return lsp[server].setup(override)
 end
 
@@ -39,15 +23,17 @@ local M = lib.mkPlugin({
   configurePhase = function()
     return {
       init = function()
-        useLSP("bashls", "bash-language-server", "bash-language-server", { "start" }, {})
-        useLSP("gopls", "gopls", "gopls", {}, {})
-        useLSP("jsonls", "vscode-json-languageserver", "vscode-json-language-server", { "--stdio" }, {})
-        useLSP("lua_ls", "lua-lsp", "lua-lsp", {}, {})
-        useLSP("nixd", "nixd", "nixd", {}, {})
-        useLSP("sqls", "sqls", "sqls", {}, {})
-        useLSP("tailwindcss", "tailwindcss-language-server", "tailwind-language-server", { "--stdio" }, {})
-        useLSP("taplo", "taplo", "taplo", { "lsp", "" }, {})
-        useLSP("perlnavigator", "perlnavigator", "perlnavigator", { "--stdio" }, {
+        useLSP("bashls", {})
+        useLSP("gopls", {})
+        useLSP("jsonls", {
+          cmd = { "vscode-json-languageserver", "--stdio" },
+        })
+        useLSP("lua_ls", {})
+        useLSP("nixd", {})
+        useLSP("sqls", {})
+        useLSP("tailwindcss", {})
+        useLSP("taplo", {})
+        useLSP("perlnavigator", {
           settings = {
             perlnavigator = {
               perlPath = "perl",

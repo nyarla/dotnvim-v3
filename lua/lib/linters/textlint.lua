@@ -1,35 +1,37 @@
 local lib = require("lib.linters")
 
-local function detectTextlintrc()
+local function buildArgs()
   local path = vim.fn.expand("%:p")
   local paths = { "" }
   local textlintrc = ""
 
-  for dir in string.gmatch(path, "[^/+]") do
-    local rc = table.concat(paths, "/") .. ".textlintrc"
+  for dir in string.gmatch(path, "[^/]+") do
+    local rc = table.concat(paths, "/") .. "/.textlintrc"
 
     if vim.fn.filereadable(rc) == 1 then
       textlintrc = rc
-      break
+      goto last
     end
 
     for _, extension in ipairs({ "cjs", "js", "json", "yaml", "yml" }) do
-      local fn = table.concat(paths, "/") .. ".textlintrc." .. extension
+      local fn = table.concat(paths, "/") .. "/.textlintrc." .. extension
 
       if vim.fn.filereadable(fn) == 1 then
         textlintrc = fn
-        break
+        goto last
       end
     end
 
     table.insert(paths, dir)
   end
 
-  if textlintrc ~= "" then
-    return "--config=" .. textlintrc
+  ::last::
+
+  if textlintrc == "" then
+    return { "--format=json" }
   end
 
-  return ""
+  return { "--format=json", "--config=" .. textlintrc }
 end
 
 local serevity = {
@@ -39,20 +41,16 @@ local serevity = {
 }
 
 local M = lib.mkLinter({
-  pname = "textlint",
   executable = "textlint",
 
   configurePhase = function()
     return {
-      append_fname = true,
       stream = "stdout",
-      ignore_exitcode = true,
+      ignore_exitcode = false,
     }
   end,
 
-  buildArgs = function()
-    return { "--format=json", detectTextlintrc }
-  end,
+  buildArgs = buildArgs,
 
   parsePhase = function(src)
     if vim.trim(src) == "" or src == nil then

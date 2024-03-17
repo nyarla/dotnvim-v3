@@ -32,11 +32,8 @@ local M = lib.mkPlugin({
           nix = { "statix", "deadnix" },
         }
 
-        for _, linters in pairs(plugin.linters_by_ft) do
-          for _, name in ipairs(linters) do
-            plugin.linters[name] = require("lib.linters." .. name)
-          end
-        end
+        plugin.linters["deadnix"] = require("lib.linters.deadnix")
+        plugin.linters["textlint"] = require("lib.linters.textlint")
 
         return true
       end,

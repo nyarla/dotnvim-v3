@@ -1,7 +1,6 @@
 local lib = require("lib.linters")
 
 local M = lib.mkLinter({
-  pname = "deadnix",
   executable = "deadnix",
 
   configurePhase = function()
