@@ -8,7 +8,6 @@ function M.fetchFromGitHub(opts)
   return {
     url = "https://github.com/" .. owner .. "/" .. repo .. ".git",
     commit = rev,
-    pin = true,
   }
 end
 
