@@ -1,19 +1,3 @@
-local function formatters(override)
-  for name, config in pairs(override) do
-    override[name].command = "bash"
-    override[name].prepend_args = {
-      vim.env.HOME .. "/.config/nvim/pkgs/bin/nix-run",
-      "--app",
-      config.executable,
-      "--package",
-      config.package,
-      "--",
-    }
-  end
-
-  return override
-end
-
 local lib = require("lib.plugins")
 
 local M = lib.mkPlugin({
@@ -27,7 +11,8 @@ local M = lib.mkPlugin({
   activatePhase = function()
     return {
       lazy = true,
-      event = "BufWritePre",
+      event = { "BufWritePre" },
+      cmd = { "ConformInfo" },
     }
   end,
 
@@ -58,7 +43,7 @@ local M = lib.mkPlugin({
             "*.yaml",
           },
           callback = function(args)
-            require("conform").format({ bufnr = args.buf })
+            require("conform").format({ bufnr = args.buf, timeout_ms = 10000 })
           end,
         })
 
@@ -99,41 +84,11 @@ local M = lib.mkPlugin({
           nix = { "nixfmt" },
           yaml = { "preitter" },
         },
-        formatters = formatters({
+        formatters = {
           biome = {
-            package = "biome",
-            executable = "biome",
             args = { "format", "--indent-style", "space", "--line-ending", "lf", "--stdin-file-path", "$FILENAME" },
           },
-          gofmt = {
-            package = "go",
-            executable = "gofmt",
-          },
-          goimports = {
-            package = "gotools",
-            executable = "goimports",
-          },
-          nixfmt = {
-            package = "nixfmt",
-            executable = "nixfmt",
-          },
-          perltidy = {
-            package = "PerlTidy",
-            executable = "perltidy",
-          },
-          prettier = {
-            package = "prettier",
-            executable = "prettier",
-          },
-          sqlfluff = {
-            package = "sqlfluff",
-            executable = "sqlfluff",
-          },
-          stylua = {
-            package = "stylua",
-            executable = "stylua",
-          },
-        }),
+        },
       },
     }
   end,

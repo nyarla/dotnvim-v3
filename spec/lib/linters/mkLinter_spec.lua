@@ -5,12 +5,13 @@ describe("lib.linters", function()
       return { { foo = "bar" } }
     end
 
+    local buildArgs = function()
+      return { "-lah" }
+    end
+
     local linter = lib.mkLinter({
-      pname = "coreutils",
       executable = "ls",
-      buildArgs = function()
-        return { "-lah" }
-      end,
+      buildArgs = buildArgs,
       parsePhase = parser,
       configurePhase = function()
         return { append_fname = true }
@@ -18,17 +19,9 @@ describe("lib.linters", function()
     })
 
     assert.are.same(linter, {
-      cmd = "bash",
+      cmd = "ls",
       append_fname = true,
-      args = {
-        vim.env.HOME .. "/.config/nvim/pkgs/bin/nix-run",
-        "--package",
-        "coreutils",
-        "--app",
-        "ls",
-        "--",
-        "-lah",
-      },
+      args = { "-lah" },
       parser = parser,
     })
   end)
