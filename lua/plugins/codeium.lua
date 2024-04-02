@@ -5,7 +5,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "Exafunction",
     repo = "codeium.nvim",
-    rev = "cd5913ff5481229b15186293d1d46dd9500789f9",
+    rev = "a070f57c0f54bd940436b94c8b679bcad5a48811",
   }),
 
   buildInputs = {

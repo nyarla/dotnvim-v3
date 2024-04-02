@@ -5,7 +5,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "hrsh7th",
     repo = "cmp-cmdline",
-    rev = "8ee981b4a91f536f52add291594e89fb6645e451",
+    rev = "d250c63aa13ead745e3a40f61fdd3470efde3923",
   }),
 
   buildInputs = { "nvim-cmp" },

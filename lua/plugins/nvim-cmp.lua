@@ -11,7 +11,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "hrsh7th",
     repo = "nvim-cmp",
-    rev = "04e0ca376d6abdbfc8b52180f8ea236cbfddf782",
+    rev = "2fb2a3cf78bbc1b0bea030e8c8728985af1cf302",
   }),
 
   activatePhase = function()
