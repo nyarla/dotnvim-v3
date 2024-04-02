@@ -5,7 +5,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "nvim-lua",
     repo = "plenary.nvim",
-    rev = "f7adfc4b3f4f91aab6caebf42b3682945fbc35be",
+    rev = "8aad4396840be7fc42896e3011751b7609ca4119",
   }),
 })
 

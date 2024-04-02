@@ -5,7 +5,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "neovim",
     repo = "nvim-lspconfig",
-    rev = "1917b562a02f20885900b1da0f0ea25028ccedab",
+    rev = "f4619ab31fc4676001ea05ae8200846e6e7700c7",
   }),
 })
 
