@@ -37,6 +37,11 @@ for scope, table in pairs(options) do
   end
 end
 
+vim.fn.setcellwidths({
+  { 0x2500, 0x25FF, 1 },
+  { 0xE000, 0xF800, 2 },
+})
+
 if vim.fn.isdirectory(HOME .. "/.local/share/nvim/mason/bin") then
   vim.env["PATH"] = vim.env["PATH"] .. ":" .. HOME .. "/.local/share/nvim/mason/bin"
 end
