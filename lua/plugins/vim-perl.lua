@@ -18,7 +18,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "vim-perl",
     repo = "vim-perl",
-    rev = "f59a1610b928bd349c4a471804e38960e001a1af",
+    rev = "25ecb0061a3558d242a471b162aad20e4308815d",
   }),
 
   activatePhase = function()
