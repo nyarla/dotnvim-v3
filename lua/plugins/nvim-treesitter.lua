@@ -4,7 +4,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "nvim-treesitter",
     repo = "nvim-treesitter",
-    rev = "883c72cddc34195a3b916905f6e61d789ddd3599",
+    rev = "d31eb5442deb4940a98b5573b78eb822b74fbcea",
   }),
 
   configurePhase = function()

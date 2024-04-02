@@ -16,11 +16,11 @@
   "nvim-cmp": { "branch": "main", "commit": "2fb2a3cf78bbc1b0bea030e8c8728985af1cf302" },
   "nvim-lint": { "branch": "master", "commit": "e824adb9bc01647f71e55457353a68f0f37f9931" },
   "nvim-lspconfig": { "branch": "master", "commit": "f4619ab31fc4676001ea05ae8200846e6e7700c7" },
-  "nvim-treesitter": { "branch": "master", "commit": "883c72cddc34195a3b916905f6e61d789ddd3599" },
+  "nvim-treesitter": { "branch": "master", "commit": "d31eb5442deb4940a98b5573b78eb822b74fbcea" },
   "nvim-web-devicons": { "branch": "master", "commit": "3ee60deaa539360518eaab93a6c701fe9f4d82ef" },
   "nvim-window-picker": { "branch": "main", "commit": "41cfaa428577c53552200a404ae9b3a0b5719706" },
   "plenary": { "branch": "master", "commit": "8aad4396840be7fc42896e3011751b7609ca4119" },
   "plenary.nvim": { "branch": "master", "commit": "8aad4396840be7fc42896e3011751b7609ca4119" },
-  "vim-perl": { "branch": "dev", "commit": "f59a1610b928bd349c4a471804e38960e001a1af" },
+  "vim-perl": { "branch": "dev", "commit": "25ecb0061a3558d242a471b162aad20e4308815d" },
   "vim-vsnip": { "branch": "master", "commit": "02a8e79295c9733434aab4e0e2b8c4b7cea9f3a9" }
 }
