@@ -71,6 +71,7 @@ local M = lib.mkPlugin({
           typescript = { "biome" },
           typescriptreact = { "biome" },
 
+          markdown = { "prettier" },
           -- sql
           sql = { "sqlfluff" },
 
@@ -82,7 +83,7 @@ local M = lib.mkPlugin({
           -- data structures
           json = { "biome" },
           nix = { "nixfmt" },
-          yaml = { "preitter" },
+          yaml = { "prettier" },
         },
         formatters = {
           biome = {
