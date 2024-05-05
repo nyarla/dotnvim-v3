@@ -1,15 +1,15 @@
 local lib = require("lib.linters")
 
-local function buildArgs()
+local function textlintrc()
   local path = vim.fn.expand("%:p")
   local paths = { "" }
-  local textlintrc = ""
+  local config = ""
 
   for dir in string.gmatch(path, "[^/]+") do
     local rc = table.concat(paths, "/") .. "/.textlintrc"
 
     if vim.fn.filereadable(rc) == 1 then
-      textlintrc = rc
+      config = rc
       goto last
     end
 
@@ -17,7 +17,7 @@ local function buildArgs()
       local fn = table.concat(paths, "/") .. "/.textlintrc." .. extension
 
       if vim.fn.filereadable(fn) == 1 then
-        textlintrc = fn
+        config = fn
         goto last
       end
     end
@@ -27,11 +27,15 @@ local function buildArgs()
 
   ::last::
 
-  if textlintrc == "" then
-    return { "--format=json" }
+  if config == "" then
+    return ""
   end
 
-  return { "--format=json", "--config=" .. textlintrc }
+  return "--config=" .. config
+end
+
+local function buildArgs()
+  return { "--format=json", textlintrc }
 end
 
 local serevity = {
