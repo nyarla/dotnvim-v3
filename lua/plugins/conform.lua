@@ -21,15 +21,25 @@ local M = lib.mkPlugin({
       init = function()
         vim.api.nvim_create_autocmd("BufWritePre", {
           pattern = {
-            -- web
-            "*.css",
+            -- Web
+            -- ===
+            -- documents
             "*.html",
+            "*.md",
+            "*.mdx",
+            -- javascript / typescript
+            "*.cjs",
             "*.js",
             "*.jsx",
-            "*.scss",
+            "*.mjs",
             "*.ts",
             "*.tsx",
-            -- sql
+            -- css / scss
+            "*.css",
+            "*.scss",
+            -- Development
+            -- ===========
+            -- database
             "*.sql",
             -- languages
             "*.go",
@@ -37,9 +47,11 @@ local M = lib.mkPlugin({
             "*.pl",
             "*.pm",
             "*.t",
-            -- data structures
+            -- Configuration
+            -- =============
             "*.json",
             "*.nix",
+            "*.toml",
             "*.yaml",
           },
           callback = function(args)
@@ -61,18 +73,22 @@ local M = lib.mkPlugin({
       end,
       opts = {
         formatters_by_ft = {
-          -- web
-          css = { "prettier" },
-          scss = { "prettier" },
+          -- Web
+          -- ===
           html = { "prettier" },
+          markdown = { "prettier" },
 
           javascript = { "biome" },
           javascriptreact = { "biome" },
           typescript = { "biome" },
           typescriptreact = { "biome" },
 
-          markdown = { "prettier" },
-          -- sql
+          css = { "prettier" },
+          scss = { "prettier" },
+
+          -- Development
+          -- ===========
+          -- database
           sql = { "sqlfluff" },
 
           -- languages
@@ -80,9 +96,11 @@ local M = lib.mkPlugin({
           lua = { "stylua" },
           perl = { "perltidy" },
 
-          -- data structures
+          -- Configuration
+          -- =============
           json = { "biome" },
           nix = { "nixfmt" },
+          toml = { "taplo" },
           yaml = { "prettier" },
         },
         formatters = {
