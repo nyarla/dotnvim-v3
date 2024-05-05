@@ -5,7 +5,7 @@ local M = lib.mkPlugin({
   src = lib.fetchFromGitHub({
     owner = "stevearc",
     repo = "conform.nvim",
-    rev = "db2c697fe8302f0328b50b480204be1b577a1e2f",
+    rev = "12b3995537f52ba2810a9857e8ca256881febbda",
   }),
 
   activatePhase = function()
