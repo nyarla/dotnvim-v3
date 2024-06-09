@@ -1,187 +1,232 @@
-local function assign(name, opts)
-  vim.api.nvim_set_hl(0, name, opts)
-end
-
-local g = vim.g
-
-local kalaclista = {
-  colors = {
-    light = {
-      foreground = "#000000",
-      background = "#f8f8f8",
-      blue = "#006699",
-      cyan = "#009999",
-      green = "#669900",
-      magenta = "#996699",
-      red = "#cc3300",
-      yellow = "#996600",
-      gray = "#999999",
-    },
-    dark = {
-      foreground = "#f8f8f8",
-      background = "#000000",
-      gray = "#333333",
-      blue = "#00ccff",
-      cyan = "#00cccc",
-      green = "#ccff00",
-      magenta = "#cc99cc",
-      red = "#ff6633",
-      yellow = "#ffcc33",
-    },
+local theme = {
+  gray = {
+    "#111111",
+    "#1b1b1b",
+    "#262626",
+    "#303030",
+    "#3b3b3b",
+    "#474747",
+    "#525252",
+    "#5e5e5e",
+    "#6a6a6a",
+    "#777777",
+    "#848484",
+    "#919191",
+    "#9e9e9e",
+    "#ababab",
+    "#b9b9b9",
+    "#c6c6c6",
+    "#d4d4d4",
+    "#e2e2e2",
+    "#f1f1f1",
+  },
+  light = {
+    "#111111", -- black
+    "#994235", -- red
+    "#52650e", -- green
+    "#7f5512", -- yellow
+    "#4a5ba6", -- blue
+    "#8b4487", -- magenta
+    "#00706b", -- cyan
+    "#f1f1f1", -- white
+  },
+  dark = {
+    "#111111", -- black
+    "#ff5661", -- red
+    "#b0e300", -- green
+    "#ffbf00", -- yellow
+    "#5fc7ff", -- blue
+    "#efa6ff", -- magenta
+    "#00fff9", -- cyan
+    "#f1f1f1", -- white
   },
 }
 
-if vim.fn.exists("syntax_on") then
-  vim.cmd.syntax("reset")
+local BLACK = { 1, theme.light[1], theme.dark[1] }
+local RED = { 2, theme.light[2], theme.dark[2] }
+local GREEN = { 3, theme.light[3], theme.dark[3] }
+local YELLOW = { 4, theme.light[4], theme.dark[4] }
+local BLUE = { 5, theme.light[5], theme.dark[5] }
+local MAGENTA = { 6, theme.light[6], theme.dark[6] }
+local CYAN = { 7, theme.light[7], theme.dark[7] }
+local WHITE = { 8, theme.light[8], theme.dark[8] }
+
+local GRAY50 = { 1, theme.gray[1], theme.gray[19] }
+local GRAY100 = { 2, theme.gray[2], theme.gray[18] }
+local GRAY150 = { 3, theme.gray[3], theme.gray[17] }
+local GRAY200 = { 4, theme.gray[4], theme.gray[16] }
+local GRAY250 = { 5, theme.gray[5], theme.gray[15] }
+local GRAY300 = { 6, theme.gray[6], theme.gray[14] }
+local GRAY350 = { 7, theme.gray[7], theme.gray[13] }
+local GRAY400 = { 8, theme.gray[8], theme.gray[12] }
+local GRAY450 = { 9, theme.gray[9], theme.gray[11] }
+local GRAY500 = { 10, theme.gray[10], theme.gray[10] }
+local GRAY550 = { 11, theme.gray[11], theme.gray[9] }
+local GRAY600 = { 12, theme.gray[12], theme.gray[8] }
+local GRAY650 = { 13, theme.gray[13], theme.gray[7] }
+local GRAY700 = { 14, theme.gray[14], theme.gray[6] }
+local GRAY750 = { 15, theme.gray[15], theme.gray[5] }
+local GRAY800 = { 16, theme.gray[16], theme.gray[4] }
+local GRAY850 = { 17, theme.gray[17], theme.gray[3] }
+local GRAY900 = { 18, theme.gray[18], theme.gray[2] }
+local GRAY950 = { 19, theme.gray[19], theme.gray[1] }
+
+local LIGHT = 2
+local DARK = 3
+local MODE = vim.o.background == "light" and LIGHT or DARK
+local INVERT = vim.o.background == "light" and DARK or LIGHT
+
+local hi = function(name, opts, mode)
+  local mode = mode or MODE
+
+  local val = {}
+  for k, v in pairs(opts) do
+    if k == "fg" then
+      val.fg = v[mode]
+      --val.ctermfg = v[1]
+    elseif k == "bg" then
+      val.bg = v[mode]
+      --val.ctermbg = v[1]
+    else
+      val[k] = opts[k]
+    end
+  end
+
+  val.cterm = val.cterm or {}
+  val.force = true
+  vim.api.nvim_set_hl(0, name, val)
 end
 
-g.color_name = "kalaclista"
+vim.g.terminal_color_0 = BLACK[MODE]
+vim.g.terminal_color_1 = RED[MODE]
+vim.g.terminal_color_2 = GREEN[MODE]
+vim.g.terminal_color_3 = YELLOW[MODE]
+vim.g.terminal_color_4 = BLUE[MODE]
+vim.g.terminal_color_5 = MAGENTA[MODE]
+vim.g.terminal_color_6 = CYAN[MODE]
+vim.g.terminal_color_7 = WHITE[MODE]
+vim.g.terminal_color_8 = BLACK[MODE]
+vim.g.terminal_color_9 = RED[MODE]
+vim.g.terminal_color_10 = GREEN[MODE]
+vim.g.terminal_color_11 = YELLOW[MODE]
+vim.g.terminal_color_12 = BLUE[MODE]
+vim.g.terminal_color_13 = MAGENTA[MODE]
+vim.g.terminal_color_14 = CYAN[MODE]
+vim.g.terminal_color_15 = WHITE[MODE]
 
-local l = kalaclista.colors.light
-local d = kalaclista.colors.dark
+-- common
+hi("Normal", { fg = WHITE, bg = BLACK })
+hi("Bold", { bold = true })
+hi("Underlined", { underline = true })
+hi("Directory", { fg = CYAN })
+hi("NonText", { fg = GRAY500, bold = true })
+hi("SpecialKey", { fg = CYAN, bold = true })
+hi("EndOfBuffer", { fg = GRAY300 })
 
--- terminal
-g.terminal_color_0 = d.background
-g.terminal_color_1 = d.red
-g.terminal_color_2 = d.green
-g.terminal_color_3 = d.yellow
-g.terminal_color_4 = d.blue
-g.terminal_color_5 = d.magenta
-g.terminal_color_6 = d.cyan
-g.terminal_color_7 = d.foreground
-g.terminal_color_8 = l.gray
-g.terminal_color_9 = l.red
-g.terminal_color_10 = l.green
-g.terminal_color_11 = l.yellow
-g.terminal_color_12 = l.blue
-g.terminal_color_13 = l.magenta
-g.terminal_color_14 = l.cyan
-g.terminal_color_15 = l.background
+hi("Title", { fg = WHITE, bold = true })
+hi("Comment", { fg = GRAY500 })
 
--- msg
-assign("Normal", { fg = d.foreground, bg = d.background })
-assign("Bold", { bold = true })
-assign("Directory", { fg = d.cyan })
-assign("NonText", { fg = d.gray, bold = true })
-assign("SpecialKey", { fg = d.cyan, bold = true })
-assign("EndOfBuffer", { fg = l.gray })
+hi("String", { fg = YELLOW })
+hi("Character", { fg = CYAN })
+hi("Number", { fg = YELLOW })
+hi("Boolean", { fg = GREEN })
+hi("Float", { fg = YELLOW })
 
--- UI
-assign("MoreMsg", { fg = d.green, bold = true })
-assign("ModeMsg", { fg = d.blue, bold = true })
-assign("Question", { fg = d.blue, bold = true })
-assign("MatchParen", { bold = true, underline = true, reverse = true })
-assign("Error", { fg = d.frground, bg = d.red, bold = true })
-assign("ErrorMsg", { fg = d.forground, bg = d.red, bold = true })
-assign("WarningMsg", { fg = d.yellow, bg = d.background, bold = true })
+hi("Identifier", { fg = WHITE, bold = true })
+hi("Function", { fg = BLUE, bold = true })
 
-assign("Cursor", { fg = d.background, bg = d.blue, bold = true })
-assign("Visual", { fg = d.background, bg = d.blue })
+hi("Constant", { bold = true })
 
-assign("LineNr", { fg = l.gray, bg = d.backgtound })
-assign("LineNrAbove", { fg = l.gray, bg = d.backgtound })
-assign("LineNrBelow", { fg = l.gray, bg = d.backgtound })
+hi("Statement", { fg = GREEN })
+hi("Operator", { bold = true })
 
-assign("CursorLine", { bg = "#112233" })
-assign("CursorLineNr", { fg = d.foreground, bg = l.blue })
+hi("PreProc", { fg = YELLOW })
+hi("Type", { fg = GREEN })
+hi("Special", { fg = GRAY200 })
+hi("Tag", { fg = GREEN })
 
-assign("Search", { bold = true, underline = true })
-assign("IncSearch", { bold = true, underline = true })
-
-assign("VertSplit", { fg = l.background })
-assign("SignColumn", { bg = d.background })
-
-assign("Pmenu", { fg = d.foreground, bg = d.background })
-assign("PmenuSel", { fg = l.background, bg = l.blue })
-assign("PmenuSbar", { fg = l.gray, bg = d.background })
-assign("PmenuThumb", { bold = true })
-
-assign("StatusLine", { fg = d.forground, bg = d.gray, bold = true })
-assign("StatusLineNC", { fg = d.forground, bg = d.background })
-
-assign("NeoTreeDirectoryIcon", { fg = d.yellow })
-
-assign("NeoTreeTabActive", { fg = d.green })
-assign("NeoTreeTabInactive", { fg = l.gray })
-
-assign("TabLine", { bg = d.background })
-assign("TabLineSel", { bg = d.blue })
-assign("TabLineClose", { fg = d.red, bg = d.background })
-
-assign("HeirLineToggleFileManager", { fg = d.yellow, bold = true })
-assign("HeirLineOpenTerminal", { fg = d.cyan, bold = true })
-assign("HeirLineOpenNewTab", { bold = true })
-
-assign("CmpWinPmenuSbar", { bg = l.blue })
-assign("CmpItemAbbrMatchFuzzy", { fg = d.foreground, bg = l.blue })
-assign("CmpItemAbbrMatch", { fg = d.foreground, bg = l.green })
-assign("CmpItemKind", { fg = d.forground })
-assign("CmpItemKindClass", { link = "Identifier" })
-assign("CmpItemKindColor", { link = "CmpItemKind" })
-assign("CmpItemKindConstant", { link = "Constant" })
-assign("CmpItemKindConstructor", { link = "Function" })
-assign("CmpItemKindCopilot", { fg = l.bright })
-assign("CmpItemKindEnum", { link = "Identifier" })
-assign("CmpItemKindEnumMember", { link = "Type" })
-assign("CmpItemKindEvent", { link = "Statement" })
-assign("CmpItemKindField", { link = "Type" })
-assign("CmpItemKindFile", { fg = d.foreground })
-assign("CmpItemKindFolder", { fg = d.yellow })
-assign("CmpItemKindFunction", { link = "Function" })
-assign("CmpItemKindInterface", { link = "Identifier" })
-assign("CmpItemKindKeyword", { link = "Identifier" })
-assign("CmpItemKindMethod", { link = "Function" })
-assign("CmpItemKindModule", { link = "Identifier" })
-assign("CmpItemKindOperator", { link = "Operator" })
-assign("CmpItemKindProperty", { link = "Type" })
-assign("CmpItemKindReference", { link = "Identifier" })
-assign("CmpItemKindSnippet", { link = "Special" })
-assign("CmpItemKindStruct", { link = "Constant" })
-assign("CmpItemKindTabNine", { fg = l.bright })
-assign("CmpItemKindText", { fg = d.blue })
-assign("CmpItemKindTypeParameter", { link = "Identifier" })
-assign("CmpItemKindUnit", { link = "Type" })
-assign("CmpItemKindValue", { link = "Identifier" })
-assign("CmpItemKindVariable", { link = "Identifier" })
-
--- syntax
-assign("Title", { fg = d.foreground })
-assign("Comment", { fg = l.gray })
-
-assign("Constant", { fg = d.foregound })
-assign("String", { fg = d.yellow })
-assign("Character", { fg = d.blue })
-assign("Number", { fg = d.green })
-assign("Float", { fg = d.green })
-assign("Boolean", { fg = d.green })
-
-assign("Identifier", { fg = d.foreground, bold = true })
-assign("Function", { fg = d.blue, bold = true })
-
-assign("Statement", { fg = d.green })
-assign("Operator", { bold = true })
-
-assign("PreProc", { fg = d.yellow })
-assign("Type", { fg = d.green })
-assign("Special", { fg = d.magenta })
-
-assign("Underlined", { underline = true })
-assign("Ignore", { fg = d.gray })
-assign("Todo", { fg = d.foreground, bg = d.yellow })
+hi("Ignore", { fg = GRAY300 })
+hi("Todo", { fg = BLACK, bg = YELLOW })
 
 -- filetypes
-assign("htmlTag", { fg = d.blue })
-assign("htmlEndTag", { fg = d.blue })
+hi("@tag.html", { fg = GREEN, bold = true })
+hi("@tag.attribute.html", { fg = CYAN })
+hi("@tag.delimiter.html", { fg = BLUE, bold = false })
+hi("@operator.html", { fg = CYAN, bold = true }, INVERT)
 
-assign("xmlTag", { fg = d.blue })
-assign("xmlEndTag", { fg = d.blue })
-assign("xmlTagName", { fg = d.green })
+-- UI
+hi("MoreMsg", { fg = GREEN })
+hi("ModeMsg", { fg = BLUE })
+hi("Question", { fg = BLUE, bold = true })
+hi("MatchParen", { fg = RED, bold = true, underline = true })
+hi("Error", { fg = BLACK, bg = RED })
+hi("ErrorMsg", { fg = BLACK, bg = RED })
+hi("WarningMsg", { fg = BLACK, bg = YELLOW })
 
-assign("yamlBool", { fg = d.blue })
+hi("CursorLine", { bg = GRAY800 })
+hi("CursorLineNr", { fg = WHITE, bg = GRAY800 })
 
-assign("markdownHeadingDelimiter", { fg = d.green, bold = true })
-assign("markdownUrl", { fg = d.blue })
+hi("LineNr", { fg = GRAY500 })
+hi("LineNrAbove", { fg = GRAY500 })
+hi("LineNrBelow", { fg = GRAY500 })
 
-assign("perlIdentifier", { fg = d.blue })
+hi("Search", { bold = true, underline = true })
+hi("IncSearch", { bold = true, underline = true })
 
-assign("luaMetaMethod", { fg = d.blue })
+hi("Cursor", { reverse = true })
+hi("Visual", { reverse = true })
+
+hi("VertSplit", { fg = WHITE })
+hi("SignColumn", { bg = BLACK })
+
+hi("StatusLine", { fg = WHITE, bg = GRAY800 })
+hi("StatusLineNC", { bg = GRAY800 })
+hi("Pmenu", { fg = WHITE, bg = BLACK })
+hi("PmenuSel", { fg = WHITE, bg = BLUE }, INVERT)
+hi("PmenuSbar", { fg = GRAY700, bg = BLACK })
+hi("PmenuThumb", { bold = true })
+
+-- plugins
+hi("NeoTreeDirectoryIcon", { fg = YELLOW })
+
+hi("NeoTreeTabActive", { fg = GREEN })
+hi("NeoTreeTabInactive", { fg = GRAY700 })
+
+hi("TabLine", { bg = BLACK })
+hi("TabLineSel", { bg = BLUE })
+hi("TabLineClose", { fg = RED, bg = BLACK })
+
+hi("HeirLineToggleFileManager", { fg = YELLOW, bold = true })
+hi("HeirLineOpenTerminal", { fg = CYAN, bold = true })
+hi("HeirLineOpenNewTab", { bold = true })
+
+hi("CmpWinPmenuSbar", { bg = BLUE }, INVERT)
+hi("CmpItemAbbrMatchFuzzy", { fg = WHITE, bg = BLUE }, INVERT)
+hi("CmpItemAbbrMatch", { fg = WHITE, bg = GREEN }, INVERT)
+hi("CmpItemKind", { fg = WHITE })
+hi("CmpItemKindClass", { link = "Identifier" })
+hi("CmpItemKindColor", { link = "CmpItemKind" })
+hi("CmpItemKindConstant", { link = "Constant" })
+hi("CmpItemKindConstructor", { link = "Function" })
+hi("CmpItemKindCopilot", { fg = WHITE })
+hi("CmpItemKindEnum", { link = "Identifier" })
+hi("CmpItemKindEnumMember", { link = "Type" })
+hi("CmpItemKindEvent", { link = "Statement" })
+hi("CmpItemKindField", { link = "Type" })
+hi("CmpItemKindFile", { fg = WHITE })
+hi("CmpItemKindFolder", { fg = YELLOW })
+hi("CmpItemKindFunction", { link = "Function" })
+hi("CmpItemKindInterface", { link = "Identifier" })
+hi("CmpItemKindKeyword", { link = "Identifier" })
+hi("CmpItemKindMethod", { link = "Function" })
+hi("CmpItemKindModule", { link = "Identifier" })
+hi("CmpItemKindOperator", { link = "Operator" })
+hi("CmpItemKindProperty", { link = "Type" })
+hi("CmpItemKindReference", { link = "Identifier" })
+hi("CmpItemKindSnippet", { link = "Special" })
+hi("CmpItemKindStruct", { link = "Constant" })
+hi("CmpItemKindText", { fg = BLUE })
+hi("CmpItemKindTypeParameter", { link = "Identifier" })
+hi("CmpItemKindUnit", { link = "Type" })
+hi("CmpItemKindValue", { link = "Identifier" })
+hi("CmpItemKindVariable", { link = "Identifier" })
