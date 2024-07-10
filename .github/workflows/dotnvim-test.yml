@@ -25,17 +25,24 @@ jobs:
           neovim: true
           version: v0.9.5
 
-      # setup lua
-      - uses: leafo/gh-actions-lua@35bcb06abec04ec87df82e08caa84d545348536e # v10.0.0
-        with:
-          luaVersion: 5.1.5
-      - uses: leafo/gh-actions-luarocks@e65774a6386cb4f24e293dca7fc4ff89165b64c5 # v4.3.0
-        with:
-          lualocksVersion: 3.9.1
+      # setup plenary.nvim
+      - name: setup plenary.nvim
+        run: |
+          set -euo pipefail
 
-      # setup test environment
-      - name: install vusted
-        run: luarocks --lua-version=5.1 install vusted
- 
-      - name: test nvim dotfiles
-        run: vusted
+          export HEAD=a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683
+          export CWD=$(pwd)
+
+          mkdir -p ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
+          cd ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
+          git init
+          git remote add origin https://github.com/nvim-lua/plenary.nvim.git
+          git fetch --depth 1 origin $HEAD
+          git reset --hard $HEAD
+
+      # run tests
+      - name: run tests for kalaclista
+        run: |
+          ls -lah $(pwd)
+          nvim --help
+          nvim --headless --noplugin -u tests/init.vim -c "PlenaryBustedDirectory tests/ {minimal_init = 'tests/init.vim'}"
