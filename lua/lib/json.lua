@@ -1,9 +1,9 @@
 local M = {}
 
--- parse JSON string.
+--- The function to parse JSON string.
 --
--- @param src string The string of JSON
--- @return any? The parsed data from JSON
+---@param src string The string of JSON
+---@return any? data The parsed data from JSON
 function M.parse(src)
   local ok, data = pcall(vim.json.decode, src)
 
@@ -14,10 +14,10 @@ function M.parse(src)
   return data
 end
 
--- stringify data to JSON
+--- The function for stringify data to JSON.
 --
--- @param data The any data of lua
--- @return string The JSON string
+---@param data any The any data of lua
+---@return string json The JSON string
 function M.stringify(data)
   return vim.json.encode(data)
 end
