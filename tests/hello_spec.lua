@@ -1,0 +1,5 @@
+describe("hello", function()
+  it("world!", function()
+    assert.are.equal("hello", "hello")
+  end)
+end)
