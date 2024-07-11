@@ -11,7 +11,7 @@ local M = {}
 ---@class kalaclistaPluginSrcGit
 ---@field url string The URL of git source
 ---@field rev string The revision of git
----@field fetchSubmodules boolean To fetch with git submodules
+---@field fetchSubmodules? boolean To fetch with git submodules
 
 --- The data description of GitHub source.
 --
@@ -19,7 +19,7 @@ local M = {}
 ---@field owner string The owner of GitHub repository
 ---@field repo string The repository name on GitHub
 ---@field rev string The revision of git
----@field fetchSubmodules boolean To fetch with git submodules
+---@field fetchSubmodules? boolean To fetch with git submodules
 
 --- The data description of local path.
 --
@@ -70,7 +70,7 @@ end
 --- The description to local plugin source.
 --
 ---@param path string The local path of plugin source
----@return kalaclistaPluginSrcLocal description The described local source
+---@return kalaclistaPluginSrc description The described local source
 function M.localFrom(path)
   return {
     kind = "local",
