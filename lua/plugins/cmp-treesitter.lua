@@ -1,8 +1,9 @@
-local lib = require("lib.plugins")
+local mkPlugin = require("lib.plugin").mkPlugin
+local fetchFromGitHub = require("lib.src").fetchFromGitHub
 
-local M = lib.mkPlugin({
+local M = mkPlugin({
   pname = "cmp-treesitter",
-  src = lib.fetchFromGitHub({
+  src = fetchFromGitHub({
     owner = "ray-x",
     repo = "cmp-treesitter",
     rev = "13e4ef8f4dd5639fca2eb9150e68f47639a9b37d",

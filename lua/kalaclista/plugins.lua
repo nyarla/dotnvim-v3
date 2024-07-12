@@ -3,7 +3,7 @@ local M = {}
 local bundles = {
   library = { "nvim-lspconfig", "plenary" },
   ui = { "heirline", "neo-tree" },
-  filetype = { "nvim-treesitter", "vim-perl" },
+  filetype = require("plugins.filetypes.setup"),
   editor = { "conform", "editorconfig", "nvim-lint" },
   completion = {
     "lspkind",
