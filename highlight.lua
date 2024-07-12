@@ -3,14 +3,43 @@ require("kalaclista.colorscheme")
 require("kalaclista.lazy")
 
 require("lazy").setup({
-  require("plugins.nvim-treesitter"),
-  require("plugins.vim-perl"),
+  spec = {
+    -- interface
+    --
+    require("plugins.heirline"),
+    require("plugins.neo-tree"),
+
+    -- filetype
+    --require("plugins.nvim-treesitter"),
+    require("plugins.vim-perl"),
+
+    -- edtior
+    --
+    require("plugins.conform"),
+    require("plugins.editorconfig"),
+    require("plugins.nvim-lint"),
+
+    -- completion
+    --
+    require("plugins.lspkind"),
+    require("plugins.nvim-lspconfig"),
+    require("plugins.plenary"),
+    require("plugins.vim-vsnip"),
+
+    require("plugins.nvim-cmp"),
+
+    require("plugins.cmp-buffer"),
+    require("plugins.cmp-cmdline"),
+    require("plugins.cmp-nvim-lsp"),
+    require("plugins.cmp-path"),
+    --require("plugins.cmp-treesitter"),
+    require("plugins.cmp-vsnip"),
+  },
+  rocks = { enabled = false },
 })
 
-local set = vim.opt
-
-set.autoindent = true
-set.expandtab = true
-set.number = false
-set.shiftwidth = 2
-set.softtabstop = 2
+vim.diagnostic.config({
+  underline = false,
+  virtual_text = false,
+  float = false,
+})
