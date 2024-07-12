@@ -4,7 +4,7 @@ local bundles = {
   library = { "nvim-lspconfig", "plenary" },
   ui = { "heirline", "neo-tree" },
   filetype = require("plugins.filetypes.setup"),
-  editor = { "conform", "editorconfig", "nvim-lint" },
+  editor = require("plugins.editor.setup"),
   completion = {
     "lspkind",
     "vim-vsnip",
