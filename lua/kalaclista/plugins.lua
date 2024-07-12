@@ -6,7 +6,7 @@ require("lazy").setup({
     require("plugins.neo-tree"),
 
     -- filetype
-    --require("plugins.nvim-treesitter"),
+    require("plugins.nvim-treesitter"),
     require("plugins.vim-perl"),
 
     -- edtior
@@ -28,7 +28,7 @@ require("lazy").setup({
     require("plugins.cmp-cmdline"),
     require("plugins.cmp-nvim-lsp"),
     require("plugins.cmp-path"),
-    --require("plugins.cmp-treesitter"),
+    require("plugins.cmp-treesitter"),
     require("plugins.cmp-vsnip"),
     require("plugins.codeium"),
   },
