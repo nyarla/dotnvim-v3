@@ -4,4 +4,4 @@ require("kalaclista.lazy").setup()
 require("kalaclista.plugins").setup({
   use = { "library", "ui", "filetype", "editor", "completion" },
 })
-require("kalaclista.keymap")
+require("kalaclista.keymap").setup()
