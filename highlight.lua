@@ -1,5 +1,5 @@
 require("kalaclista.options").setup()
-require("kalaclista.colorscheme")
+require("kalaclista.colorscheme").setup()
 require("kalaclista.lazy")
 
 require("lazy").setup({
