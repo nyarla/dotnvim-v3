@@ -1,36 +1,37 @@
-require("lazy").setup({
-  spec = {
-    -- interface
-    --
-    require("plugins.heirline"),
-    require("plugins.neo-tree"),
+local M = {}
 
-    -- filetype
-    require("plugins.nvim-treesitter"),
-    require("plugins.vim-perl"),
-
-    -- edtior
-    --
-    require("plugins.conform"),
-    require("plugins.editorconfig"),
-    require("plugins.nvim-lint"),
-
-    -- completion
-    --
-    require("plugins.lspkind"),
-    require("plugins.nvim-lspconfig"),
-    require("plugins.plenary"),
-    require("plugins.vim-vsnip"),
-
-    require("plugins.nvim-cmp"),
-
-    require("plugins.cmp-buffer"),
-    require("plugins.cmp-cmdline"),
-    require("plugins.cmp-nvim-lsp"),
-    require("plugins.cmp-path"),
-    require("plugins.cmp-treesitter"),
-    require("plugins.cmp-vsnip"),
-    require("plugins.codeium"),
+local bundles = {
+  library = { "nvim-lspconfig", "plenary" },
+  ui = { "heirline", "neo-tree" },
+  filetype = { "nvim-treesitter", "vim-perl" },
+  editor = { "conform", "editorconfig", "nvim-lint" },
+  completion = {
+    "lspkind",
+    "vim-vsnip",
+    "nvim-cmp",
+    "cmp-buffer",
+    "cmp-cmdline",
+    "cmp-nvim-lsp",
+    "cmp-path",
+    "cmp-treesitter",
+    "cmp-vsnip",
+    "codeium",
   },
-  rocks = { enabled = false },
-})
+}
+
+function M.setup(cfg)
+  local spec = {}
+  for _, name in pairs((cfg.use or {})) do
+    local bundle = bundles[name]
+    for _, plugin in ipairs(bundle) do
+      table.insert(spec, require("plugins." .. plugin))
+    end
+  end
+
+  require("lazy").setup({
+    spec = spec,
+    rocks = { enabled = false },
+  })
+end
+
+return M

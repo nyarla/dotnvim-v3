@@ -1,43 +1,9 @@
-require("kalaclista.options")
-require("kalaclista.colorscheme")
-require("kalaclista.lazy")
-
-require("lazy").setup({
-  spec = {
-    -- interface
-    --
-    require("plugins.heirline"),
-    require("plugins.neo-tree"),
-
-    -- filetype
-    require("plugins.nvim-treesitter"),
-    require("plugins.vim-perl"),
-
-    -- edtior
-    --
-    require("plugins.conform"),
-    require("plugins.editorconfig"),
-    require("plugins.nvim-lint"),
-
-    -- completion
-    --
-    require("plugins.lspkind"),
-    require("plugins.nvim-lspconfig"),
-    require("plugins.plenary"),
-    require("plugins.vim-vsnip"),
-
-    require("plugins.nvim-cmp"),
-
-    require("plugins.cmp-buffer"),
-    require("plugins.cmp-cmdline"),
-    require("plugins.cmp-nvim-lsp"),
-    require("plugins.cmp-path"),
-    require("plugins.cmp-treesitter"),
-    require("plugins.cmp-vsnip"),
-  },
-  rocks = { enabled = false },
+require("kalaclista.options").setup()
+require("kalaclista.colorscheme").setup()
+require("kalaclista.lazy").setup()
+require("kalaclista.plugins").setup({
+  use = { "library", "ui", "filetype" },
 })
-
 vim.diagnostic.config({
   underline = false,
   virtual_text = false,
