@@ -1,6 +1,6 @@
 require("kalaclista.options").setup()
 require("kalaclista.colorscheme").setup()
-require("kalaclista.lazy")
+require("kalaclista.lazy").setup()
 
 require("lazy").setup({
   spec = {
