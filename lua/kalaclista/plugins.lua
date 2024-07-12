@@ -1,7 +1,7 @@
 local M = {}
 
 local bundles = {
-  library = { "nvim-lspconfig", "plenary" },
+  library = require("plugins.library.setup"),
   ui = { "heirline", "neo-tree" },
   filetype = require("plugins.filetypes.setup"),
   editor = require("plugins.editor.setup"),
