@@ -1,6 +1,12 @@
 local mkPlugin = require("lib.plugin").mkPlugin
 local fetchFromGitHub = require("lib.src").fetchFromGitHub
 
+vim.api.nvim_create_autocmd({ "InsertEnter", "BufWritePost", "TextChanged" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+
 local M = mkPlugin({
   pname = "nvim-lint",
   src = fetchFromGitHub({
@@ -24,6 +30,8 @@ local M = mkPlugin({
 
     -- FIXME: to use `lib.linter.mkLinter`
     plugin.linters.textlint = require("lib.linters.textlint")
+
+    return true
   end,
 })
 
