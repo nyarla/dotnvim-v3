@@ -65,7 +65,7 @@ return mkPlugin({
     rev = "cd75be867f2331b22905f47d28c0c270a69466aa",
   }),
 
-  opts = {
+  options = {
     formatters_by_ft = {
       -- web
       html = { "prettier" },
