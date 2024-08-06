@@ -10,7 +10,7 @@ local M = {}
 ---@field initialise? fun(plugin) This function called by initialization phase by lazy.nvim
 ---@field options? table
 ---@field configurePhase? fun(plugin, opts): boolean
----@field buildHook? fun(plugin): boolean
+---@field buildHook? fun(plugin)
 ---@field activators? table
 
 --- The function to describe lazy.nvim specification
@@ -26,7 +26,6 @@ function M.mkPlugin(spec)
   if src.kind == "git" then
     lazySpec.url = src.data.url
     lazySpec.commit = src.data.rev
-    lazySpec.pin = true
     lazySpec.submodules = src.data.fetchSubmodules or false
   elseif src.kind == "local" then
     lazySpec.dir = src.data.path
