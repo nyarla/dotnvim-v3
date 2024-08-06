@@ -26,6 +26,7 @@ local patterns = {
   "*.pl",
   "*.pm",
   "*.t",
+  "cpanfile",
 
   -- data format
   "*.json",
