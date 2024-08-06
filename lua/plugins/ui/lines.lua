@@ -1,10 +1,17 @@
-return {
-  "rebelot/heirline.nvim",
-  dependences = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  lazy = false,
-  opts = function()
+local mkPlugin = require("lib.plugin").mkPlugin
+local fetchFromGitHub = require("lib.src").fetchFromGitHub
+
+return mkPlugin({
+  pname = "hearline",
+  src = fetchFromGitHub({
+    owner = "rebelot",
+    repo = "heirline.nvim",
+    rev = "0d797435e54645a5f98bad7ad6046aac1ef95c1e",
+  }),
+
+  buildInputs = { "nvim-web-devicons" },
+
+  configurePhase = function()
     -- theme
     --
     local colors = {
@@ -373,9 +380,13 @@ return {
       inactiveStatusLine,
     }
 
-    return {
+    require("heirline").setup({
       tabline = heirlineTabline,
       statusline = heirlineStatusline,
-    }
+    })
+
+    return true
   end,
-}
+
+  dontLazy = true,
+})

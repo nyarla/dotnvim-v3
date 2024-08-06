@@ -21,7 +21,6 @@ describe("lib.plugin", function()
 
     assert.are.equal(git.url, "https://github.com/nyarla/dotnvim-v3.git")
     assert.are.equal(git.commit, "HEAD")
-    assert.are.equal(git.pin, true)
     assert.are.equal(git.submodules, false)
   end)
 

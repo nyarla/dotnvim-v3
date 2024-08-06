@@ -1,22 +1,11 @@
 local M = {}
 
 local bundles = {
-  library = { "nvim-lspconfig", "plenary" },
-  ui = { "heirline", "neo-tree" },
-  filetype = { "nvim-treesitter", "vim-perl" },
-  editor = { "conform", "editorconfig", "nvim-lint" },
-  completion = {
-    "lspkind",
-    "vim-vsnip",
-    "nvim-cmp",
-    "cmp-buffer",
-    "cmp-cmdline",
-    "cmp-nvim-lsp",
-    "cmp-path",
-    "cmp-treesitter",
-    "cmp-vsnip",
-    "codeium",
-  },
+  library = require("plugins.library.setup"),
+  filetype = require("plugins.filetypes.setup"),
+  editor = require("plugins.editor.setup"),
+  ui = require("plugins.ui.setup"),
+  completion = require("plugins.completion.setup"),
 }
 
 function M.setup(cfg)
