@@ -2,9 +2,9 @@ local M = {}
 
 local bundles = {
   library = require("plugins.library.setup"),
-  ui = { "heirline", "neo-tree" },
   filetype = require("plugins.filetypes.setup"),
   editor = require("plugins.editor.setup"),
+  ui = require("plugins.ui.setup"),
   completion = {
     "lspkind",
     "vim-vsnip",
