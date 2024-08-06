@@ -5,18 +5,7 @@ local bundles = {
   filetype = require("plugins.filetypes.setup"),
   editor = require("plugins.editor.setup"),
   ui = require("plugins.ui.setup"),
-  completion = {
-    "lspkind",
-    "vim-vsnip",
-    "nvim-cmp",
-    "cmp-buffer",
-    "cmp-cmdline",
-    "cmp-nvim-lsp",
-    "cmp-path",
-    "cmp-treesitter",
-    "cmp-vsnip",
-    "codeium",
-  },
+  completion = require("plugins.completion.setup"),
 }
 
 function M.setup(cfg)
