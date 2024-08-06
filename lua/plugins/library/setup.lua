@@ -1,6 +1,8 @@
 local M = {
-  "library.plenary",
+  "library.devicons",
   "library.lsp",
+  "library.nui",
+  "library.plenary",
 }
 
 return M
