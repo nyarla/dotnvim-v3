@@ -6,7 +6,7 @@ local M = mkPlugin({
   src = fetchFromGitHub({
     owner = "nvim-treesitter",
     repo = "nvim-treesitter",
-    rev = "f197a15b0d1e8d555263af20add51450e5aaa1f0", -- v0.9.2
+    rev = "c760e4037cc02336ddd00737f95ee26e128fa745", -- git-2024-07-24
   }),
 
   buildHook = function(_)
